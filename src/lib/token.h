@@ -6,6 +6,16 @@
 #include <iomanip>
 #include <vector>
 
+enum class tokenType {
+    statement,
+    boolean,
+    binOp, // Includes +, -, *, /, =, and %
+    number,
+    identifier,
+    END,
+    ERROR
+};
+
 class Token {
     private:
         std::string tokenID;
