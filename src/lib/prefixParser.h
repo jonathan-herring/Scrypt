@@ -6,7 +6,7 @@
 #include <stack>
 #include <map>
 
-//Builds an AST given a vector of tokens in prefix notation
+// Builds an AST given a vector of tokens in prefix notation
 Node* constructTree(std::vector<Token> tokens, int& index) {
     if (tokens.size() == 0) {
         std::cout << "Unexpected token at line 1 column 1: END" << std::endl;
