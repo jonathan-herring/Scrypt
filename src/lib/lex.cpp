@@ -1,8 +1,8 @@
 #include "lex.h"
 
-std::vector<Token> Lexer::tokenize(std::string input) {
+std::deque<Token> Lexer::tokenize(std::string input) {
     std::string temp = "";
-    std::vector<Token> tokens;
+    std::deque<Token> tokens;
     Token token;
     int line = 1;
     int col = 0;
@@ -56,7 +56,7 @@ std::vector<Token> Lexer::tokenize(std::string input) {
             temp = "";
         }
         //Error handling
-        if (token.getType() == "ERROR") {
+        if (token.getType() == ERROR) {
             std::cout << "Syntax error on line " << token.getLine() << " column " << token.getCol() << ".\n";
             throw(1);
         }

@@ -7,41 +7,32 @@ Token::Token(int l, int c, std::string tokenID) {
     this->tokenID = tokenID;
 
     if ((tokenID == "(") || (tokenID == ")")) {
-        this->type = "parenthesis";
-        this->precedence = 3;
+        this->type = parenthesis;
     }
-    else if (tokenID == "+" || tokenID == "-" || tokenID == "*" || tokenID == "/") {
-        this->type = "binOp";
-        if (tokenID == "+" || tokenID == "-") {
-            this->precedence = 1;
-        } else {
-            this->precedence = 2;
-        }
+    else if (tokenID == "+" || tokenID == "-" || tokenID == "*" || tokenID == "/" || tokenID == "=") {
+        this->type = op;
     }
     else if (tokenID == "END") {
-        this->type = "END";
+        this->type = END;
     }
     else if (isFloat(tokenID)) {
-        this->type = "float";
+        this->type = number;
     }
-    else if (tokenID == "=") {
-        this->type = "assignment";
-        this->precedence = 0;
-    } else if (isIdentifier(tokenID)) {
-        this->type = "identifier";
+    else if (isIdentifier(tokenID)) {
+        this->type = identifier;
     }
     else {
-        this->type = "ERROR";
+        this->type = ERROR;
     }
 }
 
-//Creates token from a type
-Token::Token(int l, int c, std::string tokenID, std::string type) {
-    this->line = l;
-    this->col = c;
-    this->tokenID = tokenID;
-    this->type = type;
-}
+// //Creates token from a tokenType
+// Token::Token(int l, int c, std::string tokenID, tokenType type) {
+//     this->line = l;
+//     this->col = c;
+//     this->tokenID = tokenID;
+//     this->type = type;
+// }
 
 void Token::print() {
     std::cout << std::right << std::setw(4) << line << std::setw(5) << col << "  " << tokenID << std::endl;
