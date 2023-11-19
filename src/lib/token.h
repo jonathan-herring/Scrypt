@@ -34,8 +34,8 @@ class Token {
         int getLine() { return line; };
         int getCol() { return col; };
         // int getPrecedence() { return precedence; };
-        bool Token::isFloat(const std::string str);
-        bool Token::isIdentifier(const std::string str);
+        bool isFloat(const std::string str);
+        bool isIdentifier(const std::string str);
         void print();
 };
 
