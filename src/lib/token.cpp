@@ -8,25 +8,36 @@ Token::Token(int l, int c, std::string tokenID) {
 
     if ((tokenID == "(") || (tokenID == ")")) {
         this->type = parenthesis;
-    }
-    else if (tokenID == "+" || tokenID == "-" || tokenID == "*" || tokenID == "/" || tokenID == "=") {
+    } else if (tokenID == "+" || tokenID == "-" || tokenID == "*" || tokenID == "/" || tokenID == "%") {
         this->type = op;
-    }
-    else if (tokenID == "END") {
+    } else if (tokenID == "END") {
         this->type = END;
-    }
-    else if (isFloat(tokenID)) {
+    } else if (isFloat(tokenID)) {
         this->type = number;
-    }
-    else if (isIdentifier(tokenID)) {
+    } else if (tokenID == "=") {
+        this->type = op;
+    } else if (isIdentifier(tokenID)) {
         this->type = identifier;
-    }
-    else {
+    } else if (tokenID == "<" || tokenID == "<=" || tokenID == ">" || tokenID == ">=") {
+        this ->type = op;
+    } else if (tokenID == "==" || tokenID == "!=") {
+        this->type = op;
+    } else if (tokenID == "&") {
+        this->type = op;
+    } else if (tokenID == "^") {
+        this->type = op;
+    } else if (tokenID == "|") {
+        this->type = op;
+    } else if (tokenID == "if" || tokenID == "while" || tokenID == "print" || tokenID == "else") {
+        this->type = statement;
+    } else if (tokenID == "{" || tokenID == "}") {
+        this->type = other;
+    } else {
         this->type = ERROR;
     }
 }
 
-// //Creates token from a tokenType
+// //Creates token from a type
 // Token::Token(int l, int c, std::string tokenID, tokenType type) {
 //     this->line = l;
 //     this->col = c;
