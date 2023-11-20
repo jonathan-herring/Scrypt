@@ -1,4 +1,4 @@
-#include "lib/infixParser.h"
+#include "lib/parser.h"
 #include "lib/lex.h"
 #include <iostream>
 
