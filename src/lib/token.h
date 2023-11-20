@@ -27,7 +27,7 @@ class Token {
         // bool isFloat(const std::string str); // We should know from type checking
         // bool isIdentifier(const std::string str); // Should know from type checking
     public:
-        Token() { tokenID = "", type = ERROR, line = 0, col = 0; };
+        Token() {};
         Token(int l, int c, std::string tokenID);
         // Token(int l, int c, std::string tokenID, tokenType type);
         tokenType getType() { return type; };

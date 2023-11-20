@@ -1,4 +1,3 @@
-
 #include "lex.h"
 
 std::deque<Token> Lexer::tokenize(std::string input) {
