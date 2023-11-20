@@ -7,6 +7,7 @@
 // #include <vector>
 
 enum tokenType {
+    none,
     parenthesis,
     op,
     number,
@@ -14,7 +15,7 @@ enum tokenType {
     statement,
     other,
     ERROR,
-    END
+    END,
 };
 
 class Token {
@@ -27,7 +28,7 @@ class Token {
         // bool isFloat(const std::string str); // We should know from type checking
         // bool isIdentifier(const std::string str); // Should know from type checking
     public:
-        Token() {};
+        Token() { tokenID = "", type = none, line = 0, col = 0; };
         Token(int l, int c, std::string tokenID);
         // Token(int l, int c, std::string tokenID, tokenType type);
         tokenType getType() { return type; };
