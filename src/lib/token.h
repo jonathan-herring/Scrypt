@@ -11,7 +11,8 @@ enum tokenType {
     op,
     number,
     identifier,
-    statement,        // Not entirely sure what the use of this would be yet
+    statement,
+    other,
     ERROR,
     END
 };
