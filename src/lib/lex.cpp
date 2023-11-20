@@ -127,7 +127,7 @@ std::deque<Token> Lexer::tokenize(std::string input) {
             temp = "";
         }
         //Error handling
-        if (token.getType() == "ERROR") {
+        if (token.getType() == ERROR) {
             std::cout << "Syntax error on line " << token.getLine() << " column " << token.getCol() << ".\n";
             throw(1);
         }
@@ -146,7 +146,7 @@ std::deque<Token> Lexer::tokenize(std::string input) {
     //check if the lex overall is valid (has float, identifier, or bool)
     bool validValue = false;
     for(size_t i = 0; i < tokens.size(); i++){
-        if(tokens[i].getType() == "float" || tokens[i].getType() == "identifier"){ //ADD TRUE FALSE TO THIS
+        if(tokens[i].getType() == number || tokens[i].getType() == identifier){ //ADD TRUE FALSE TO THIS
             validValue = true;
         }
     }
