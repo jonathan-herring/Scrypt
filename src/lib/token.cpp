@@ -7,41 +7,43 @@ Token::Token(int l, int c, std::string tokenID) {
     this->tokenID = tokenID;
 
     if ((tokenID == "(") || (tokenID == ")")) {
-        this->type = "parenthesis";
-        this->precedence = 3;
-    }
-    else if (tokenID == "+" || tokenID == "-" || tokenID == "*" || tokenID == "/") {
-        this->type = "binOp";
-        if (tokenID == "+" || tokenID == "-") {
-            this->precedence = 1;
-        } else {
-            this->precedence = 2;
-        }
-    }
-    else if (tokenID == "END") {
-        this->type = "END";
-    }
-    else if (isFloat(tokenID)) {
-        this->type = "float";
-    }
-    else if (tokenID == "=") {
-        this->type = "assignment";
-        this->precedence = 0;
+        this->type = parenthesis;
+    } else if (tokenID == "+" || tokenID == "-" || tokenID == "*" || tokenID == "/" || tokenID == "%") {
+        this->type = op;
+    } else if (tokenID == "END") {
+        this->type = END;
+    } else if (isFloat(tokenID)) {
+        this->type = number;
+    } else if (tokenID == "=") {
+        this->type = op;
     } else if (isIdentifier(tokenID)) {
-        this->type = "identifier";
-    }
-    else {
-        this->type = "ERROR";
+        this->type = identifier;
+    } else if (tokenID == "<" || tokenID == "<=" || tokenID == ">" || tokenID == ">=") {
+        this ->type = op;
+    } else if (tokenID == "==" || tokenID == "!=") {
+        this->type = op;
+    } else if (tokenID == "&") {
+        this->type = op;
+    } else if (tokenID == "^") {
+        this->type = op;
+    } else if (tokenID == "|") {
+        this->type = op;
+    } else if (tokenID == "if" || tokenID == "while" || tokenID == "print" || tokenID == "else") {
+        this->type = statement;
+    } else if (tokenID == "{" || tokenID == "}") {
+        this->type = other;
+    } else {
+        this->type = ERROR;
     }
 }
 
-//Creates token from a type
-Token::Token(int l, int c, std::string tokenID, std::string type) {
-    this->line = l;
-    this->col = c;
-    this->tokenID = tokenID;
-    this->type = type;
-}
+// //Creates token from a type
+// Token::Token(int l, int c, std::string tokenID, tokenType type) {
+//     this->line = l;
+//     this->col = c;
+//     this->tokenID = tokenID;
+//     this->type = type;
+// }
 
 void Token::print() {
     std::cout << std::right << std::setw(4) << line << std::setw(5) << col << "  " << tokenID << std::endl;

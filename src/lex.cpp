@@ -6,7 +6,7 @@ int main () {
     char ch;
     std::string input;
     Lexer lex;
-    std::vector<Token> tokens;
+    std::deque<Token> tokens;
 
     while ((std::cin.peek() != EOF)) {
         std::cin.get(ch);
