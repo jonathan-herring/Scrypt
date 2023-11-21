@@ -57,6 +57,7 @@ class OpNode : public Node {
         std::string op;
     public:
         OpNode(std::string op);
+        void subNodeAdd(Node* nodeToAdd);
         virtual void print(size_t depth);
         virtual ReturnValue evaluate(std::map<std::string, ReturnValue> variableMap);
         ReturnValue evaluateComparison(std::map<std::string, ReturnValue> variableMap);
@@ -87,6 +88,8 @@ class AssignNode : public Node {
         Node* left;
         Node* right;
     public:
+        AssignNode();
+        void subNodeAdd(Node* nodeToAdd);
         virtual void print(size_t depth);
         virtual ReturnValue evaluate(std::map<std::string, ReturnValue> variableMap);
 };

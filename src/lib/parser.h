@@ -24,7 +24,7 @@ class Parser {
         Node* parseCompare(std::deque<Token>& tokens); //
         Node* parsePlusMinus(std::deque<Token>& tokens);
         Node* parseDivMult(std::deque<Token>& tokens);
-        Node* parseOr(std::deque<Token>& tokens); // Inclusive or - |
+        Node* parseIor(std::deque<Token>& tokens); // Inclusive or - |
         Node* parseXor(std::deque<Token>& tokens); // Exclusive or - ^
         Node* parseAnd(std::deque<Token>& tokens); //
 

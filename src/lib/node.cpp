@@ -75,6 +75,15 @@ OpNode::OpNode(std::string op) {
     this->right = nullptr;
 }
 
+void OpNode::subNodeAdd(Node* nodeToAdd) {
+    if (this->left == nullptr) {
+        this->left = nodeToAdd;
+    }
+    else if (this->right == nullptr) {
+        this->right = nodeToAdd;
+    }
+}
+
 void OpNode::print(size_t depth) {
     for (size_t i = 0; i < depth; ++i) {
         std::cout << "    ";
@@ -201,3 +210,87 @@ ReturnValue OpNode::evaluateBinOp(std::map<std::string, ReturnValue> variableMap
 
     return ReturnValue(calculation);
 }
+
+
+
+IdentifierNode::IdentifierNode(std::string ID) {
+    this->ID = ID;
+}
+
+std::string IdentifierNode::getIDName() {
+    this->getIDName();
+}
+
+void IdentifierNode::print(size_t depth) {
+    for (size_t i = 0; i < depth; ++i) {
+        std::cout << "    ";
+    }
+    std::cout << this->getIDName();
+}
+
+ReturnValue IdentifierNode::evaluate(std::map<std::string, ReturnValue> variableMap) {
+    if (variableMap.find(this->getIDName()) == variableMap.end()) {
+        throw(3); // Could not find identifier value in map
+    } else {
+        return variableMap[this->getIDName()];
+    }
+}
+
+
+
+BoolNode::BoolNode(bool boolValue) {
+    this->boolValue = boolValue;
+}
+
+void BoolNode::print(size_t depth) {
+    for (size_t i = 0; i < depth; ++i) {
+        std::cout << "    ";
+    }
+    std::cout << this->boolValue;
+}
+
+ReturnValue BoolNode::evaluate(std::map<std::string, ReturnValue> variableMap) {
+    return ReturnValue(this->boolValue);
+}
+
+
+
+AssignNode::AssignNode() {
+    this->left = nullptr;
+    this->right = nullptr;
+}
+
+void AssignNode::subNodeAdd(Node* nodeToAdd) {
+    if (this->left == nullptr) {
+        this->left = nodeToAdd;
+    }
+    else if (this->right == nullptr) {
+        this->right = nodeToAdd;
+    }
+}
+
+void AssignNode::print(size_t depth) {
+    for (size_t i = 0; i < depth; i++) {
+        std::cout << "    ";
+    }
+    std::cout << "(";
+    this->left->print(0);
+    if (this->right) {
+        std::cout << " = ";
+        this->right->print(0);
+    }
+    std::cout << ")";
+}
+
+ReturnValue AssignNode::evaluate(std::map<std::string, ReturnValue> variableMap) {
+    ReturnValue rightValue(this->left->evaluate(variableMap));
+
+    if (this->left) {
+        variableMap[this->right->getIDName()] = rightValue;
+    }
+    return rightValue;
+}
+
+
+
+

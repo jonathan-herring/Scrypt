@@ -20,7 +20,9 @@ void Parser::eatToken(std::deque<Token>& tokens) {
 }
 
 Node* Parser::parse(std::deque<Token>& tokens) {
-
+    eatToken(tokens);
+    std::unique_ptr<Node> base(parseAssign(tokens));
+    return base.release();
 }
 
 Node* Parser::parseOperand(std::deque<Token>& tokens) {
@@ -28,7 +30,21 @@ Node* Parser::parseOperand(std::deque<Token>& tokens) {
 }
 
 Node* Parser::parseAssign(std::deque<Token>& tokens) {
+    std::unique_ptr<Node> leftSide(parseIor(tokens));
 
+    while (this->nextToken.getToken() == "=") {
+        eatToken(tokens);
+        std::unique_ptr<Node> rightSide(parseAssign(tokens));
+        if (leftSide == nullptr || rightSide == nullptr) {
+            std::cout << "Error: Invalid assignment target." << std::endl;
+            throw(2);
+        }
+        std::unique_ptr<AssignNode> assignmentTree(new AssignNode());
+        assignmentTree->subNodeAdd(leftSide.release());
+        assignmentTree->subNodeAdd(rightSide.release());
+        leftSide.reset(assignmentTree.release());
+    }
+    return leftSide.release();
 }
 
 Node* Parser::parseEquals(std::deque<Token>& tokens) {
@@ -36,18 +52,37 @@ Node* Parser::parseEquals(std::deque<Token>& tokens) {
 }
 
 Node* Parser::parseCompare(std::deque<Token>& tokens) {
-
+    
 }
 
 Node* Parser::parsePlusMinus(std::deque<Token>& tokens) {
+    std::unique_ptr<Node> leftSide(parseDivMult(tokens));
 
+    std::string operation = "";
+    if (this->nextToken.getToken() == "-" || this->nextToken.getToken() == "+") {
+        operation = this->nextToken.getToken();
+    }
+    while (operation == "-" || operation == "+") {
+        eatToken(tokens);
+        std::unique_ptr<Node> rightSide(parseDivMult(tokens));
+
+        if (leftSide == nullptr || rightSide == nullptr) {
+            std::cout << "Error" << std::endl; // possibly add more details later
+            throw(2);
+        }
+        std::unique_ptr<OpNode> operatorNode(new OpNode(operation));
+        operatorNode->subNodeAdd(leftSide.release());
+        operatorNode->subNodeAdd(rightSide.release());
+        leftSide.reset(operatorNode.release());
+    }
+    return leftSide.release();
 }
 
 Node* Parser::parseDivMult(std::deque<Token>& tokens) {
 
 }
 
-Node* Parser::parseOr(std::deque<Token>& tokens) {
+Node* Parser::parseIor(std::deque<Token>& tokens) {
 
 }
 
