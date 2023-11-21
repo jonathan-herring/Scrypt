@@ -3,17 +3,34 @@
 
 #include "token.h"
 
+#include <variant>
 #include <map>
+
+enum typeReturnVal {
+    Number,
+    Boolean,
+    Nothing, // Null
+    Function,
+    Undefined
+};
 
 class ReturnValue { // Different evaluates return different values, so we need this 
     private:
-        double numVal;
-        bool boolVal;
+        typeReturnVal returnType;
+        std::variant<bool, double> returnVal;
 
     public:
-        ReturnValue(double numVal) {this->numVal = numVal;};
-        ReturnValue(bool boolVal) {this->boolVal = boolVal;};
+        ReturnValue(double numVal);
+        ReturnValue(bool boolVal);
+        ReturnValue(std::nullptr_t);
         ReturnValue() {};
+        // Possible ReturnValue for functions
+
+        typeReturnVal getType() {return this->returnType;};
+        std::variant<bool, double> getVal() {return returnVal;};
+
+        bool operator == (ReturnValue);
+        bool operator != (ReturnValue);
 };
 
 class Node {
@@ -73,7 +90,5 @@ class AssignNode : public Node {
         virtual void print(size_t depth);
         virtual ReturnValue evaluate(std::map<std::string, ReturnValue> variableMap);
 };
-
-
 
 #endif

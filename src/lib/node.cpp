@@ -1,8 +1,58 @@
 #include "node.h"
 
+#include <cmath>
+
 std::string Node::getIDName() {
     std::cout << "Runtime error" << std::endl; // Add more detail?
 }
+
+bool ReturnValue::operator == (ReturnValue rightValue) {
+    if (rightValue.getType() != this->getType()) {
+        return false;
+    }
+
+    // Possible add a case for Function type
+    if (this->getType() == Boolean) {
+        return (std::get<bool>(rightValue.getVal()) == std::get<bool>(this->getVal()));
+    }
+    else if (this->getType() == Number) {
+        return (std::get<double>(rightValue.getVal()) == std::get<double>(this->getVal()));
+    }
+    else if (this->getType() == Nothing) {
+        return true;
+    }
+    else if (this->getType() == Undefined) {
+        throw(3); // Possibly add a detailed cout statement later on
+    }
+}
+
+bool ReturnValue::operator != (ReturnValue rightValue) {
+    if (rightValue == *this) {
+        return false;
+    } else {
+        return true;
+    }
+}
+
+ReturnValue::ReturnValue() {
+    this->returnType = Undefined;
+}
+
+ReturnValue::ReturnValue(double numVal) {
+    this->returnVal = numVal;
+    this->returnType = Number;
+}
+
+ReturnValue::ReturnValue(bool boolVal) {
+    this->returnVal = boolVal;
+    this->returnType = Boolean;
+}
+
+ReturnValue::ReturnValue(std::nullptr_t) {
+    this->returnType = Nothing;
+}
+
+// Possibly implement ReturnValue for functions
 
 
 
@@ -47,9 +97,107 @@ ReturnValue OpNode::evaluate(std::map<std::string, ReturnValue> variableMap) {
 }
 
 ReturnValue OpNode::evaluateComparison(std::map<std::string, ReturnValue> variableMap) {
-    
+    ReturnValue leftValue(this->left->evaluate(variableMap));
+    ReturnValue rightValue(this->right->evaluate(variableMap));
+
+    if (leftValue.getType() == Number) {
+
+        double left = std::get<double>(leftValue.getVal());
+        double right = std::get<double>(rightValue.getVal());
+
+        if (this->op == ">=") {
+            return ReturnValue(left >= right);
+        }
+        else if (this->op == "<=") {
+            return ReturnValue(left <= right);
+        }
+        else if (this->op == ">") {
+            return ReturnValue(left > right);
+        }
+        else if (this->op == "<") {
+            return ReturnValue(left < right);
+        }
+    }
+    else if (leftValue.getType() == Boolean) {
+
+        double left = std::get<bool>(leftValue.getVal());
+        double right = std::get<bool>(rightValue.getVal());
+
+        if (this->op == "^") {
+            return ReturnValue((std::get<bool>(leftValue.getVal()) && !std::get<bool>(rightValue.getVal())) 
+            || (!std::get<bool>(leftValue.getVal()) && std::get<bool>(rightValue.getVal())));
+        }
+        else if (this->op == "|") {
+            return ReturnValue(std::get<bool>(leftValue.getVal()) || std::get<bool>(rightValue.getVal()));
+        }
+        else if (this->op == "&") {
+            return ReturnValue(std::get<bool>(leftValue.getVal()) && std::get<bool>(rightValue.getVal()));
+        }
+    }
+    else if (this->op == "==") {
+        return (this->left == this->right);
+    }
+    else if (this->op == "!=") {
+        return (this->left != this->right);
+    }
+    throw(3); // Should not be reached
 }
 
 ReturnValue OpNode::evaluateBinOp(std::map<std::string, ReturnValue> variableMap) {
+    ReturnValue leftValue(this->left->evaluate(variableMap));
 
+    if (leftValue.getType() != Number) {
+        throw(3);
+    }
+
+    double calculation = std::get<double>(leftValue.getVal());
+
+    if (op == "+") {
+        ReturnValue rightValue(this->right->evaluate(variableMap));
+        if(rightValue.getType() != Number) {
+            throw(3);
+            // Needs only numbers
+        }
+        calculation += std::get<double>(rightValue.getVal());
+    }
+    else if (op == "-") {
+        ReturnValue rightValue(this->right->evaluate(variableMap));
+        if (rightValue.getType() != Number) {
+            throw(3);
+        }
+        calculation -= std::get<double>(rightValue.getVal());
+    }
+    else if (op == "/") {
+        ReturnValue rightValue(this->right->evaluate(variableMap));
+        if(rightValue.getType() != Number) {
+            throw(3);
+        }
+
+        if (std::get<double>(rightValue.getVal()) == 0) {
+            std::cout << "Runtime error: division by zero" << std::endl;
+            throw(3);
+        }
+
+        calculation /= std::get<double>(rightValue.getVal());
+    }
+    else if (op == "%") {
+        ReturnValue rightValue(this->right->evaluate(variableMap));
+        if(rightValue.getType() != Number) {
+            throw(3);
+        }
+        if (std::get<double>(rightValue.getVal()) == 0){
+            std::cout << "Runtime error: division by zero" << std::endl;
+            throw(3);
+        }
+        calculation = fmod(calculation, std::get<double>(rightValue.getVal()));
+    }
+    else if (op == "*") { 
+        ReturnValue rightValue(this->right->evaluate(variableMap));
+        if(rightValue.getType() != Number){
+            throw(3);
+        }
+        calculation *= std::get<double>(rightValue.getVal());
+    }
+
+    return ReturnValue(calculation);
 }
