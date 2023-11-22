@@ -5,20 +5,16 @@
 
 #include <deque>
 
-// class Lexer
-// {
-//     public:
-//         Lexer() {};
-//         std::deque<Token> tokenize(std::string input);
-// };
-
-// New Lexer starts here
 
 class Lexer
 {
     public:
-        Lexer() {};
-        std::deque<Token> tokenize(std::string input);
+        void tokenize(std::string input);
+        std::deque<Token> getDeque();
+        void print();
+
+    private:
+        std::deque<Token> tokens;
 };
 
 #endif

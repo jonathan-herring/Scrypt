@@ -1,5 +1,31 @@
 #include "lex.h"
 
+void Lexer::tokenize(std::string input) {
+
+    std::istringstream stream(input);
+    int curLine = 1;
+    int curCol = 1;
+    std::string temp;
+    char c;
+
+    std::set<char> ops {
+        ')',
+        '(',
+        '+',
+        '-',
+        '*',
+        '/',
+        '%',
+        '^',
+        '|',
+        '&'
+    };
+    
+}
+
+
+/* #include "lex.h"
+
 std::deque<Token> Lexer::tokenize(std::string input) {
     std::string temp = "";
     std::deque<Token> tokens;
@@ -156,4 +182,4 @@ std::deque<Token> Lexer::tokenize(std::string input) {
 
 
     return tokens;
-}
+}*/
