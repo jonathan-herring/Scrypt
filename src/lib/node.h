@@ -142,15 +142,15 @@ class StatementNode : public Node {
 
 class DefinitionNode : public Node {
     private:
-        std::vector<std::string>  parameters;
         std::string nameOfFunction;
-        std::shared_ptr<std::vector<Node*>> statements;
     public:
         DefinitionNode(std::string name);
         ~DefinitionNode();
 
         virtual void print(size_t depth);
         virtual ReturnValue evaluate(std::map<std::string, ReturnValue>& variableMap);
+        std::vector<std::string>  parameters;
+        std::shared_ptr<std::vector<Node*>> statements;
 };
 
 class CallNode : public Node {

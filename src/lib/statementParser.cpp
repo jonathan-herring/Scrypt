@@ -146,9 +146,56 @@ Node* StatementParser::ExpressionStatement(std::deque<Token>& tokens) {
     tokens.pop_front();
     return rootOfStatement.release();
 }
+Node* StatementParser::FunctionDefinition(std::deque<Token>& tokens) {
+    Token tokAtFront = tokens.front();
+    if (tokAtFront.getType() != identifier) {
+        std::cout << "Unexpected token at line " << tokAtFront.getLine() << " column " 
+        << tokAtFront.getCol() << ": " << tokAtFront.getToken() << std::endl;
+        throw(3);
+    }
+    std::unique_ptr<DefinitionNode> rootOfDefinition(new DefinitionNode(tokAtFront.getToken()));
+    tokens.pop_front();
 
-Node* FunctionDefinition(std::deque<Token>& tokens) {
-    // IMPLEMENT THIS, THEN FIX LEXER
+    if (tokAtFront.getToken() != "(") {
+        std::cout << "Unexpected token at line " << tokAtFront.getLine() << " column " 
+        << tokAtFront.getCol() << ": " << tokAtFront.getToken() << std::endl;
+        throw(3);
+    }
+    tokens.pop_front();
+
+    while(tokAtFront.getToken() != ")"){ 
+        if (tokAtFront.getType() != identifier) {
+            std::cout << "Unexpected token at line " << tokAtFront.getLine() << " column " 
+            << tokAtFront.getCol() << ": " << tokAtFront.getToken() << std::endl;
+            throw(3);
+        }
+        rootOfDefinition->parameters.push_back(tokAtFront.getToken());
+        tokens.pop_front();
+        if (tokAtFront.getToken() == ")") {
+            break;
+        }
+        if (tokAtFront.getToken() != ",") {
+            std::cout << "Unexpected token at line " << tokAtFront.getLine() << " column " 
+            << tokAtFront.getCol() << ": " << tokAtFront.getToken() << std::endl;
+            throw(3);
+        }
+        tokens.pop_front();
+        if (tokAtFront.getType() != identifier) {
+            std::cout << "Unexpected token at line " << tokAtFront.getLine() << " column " 
+            << tokAtFront.getCol() << ": " << tokAtFront.getToken() << std::endl;
+            throw(3);
+        }
+    }
+    tokens.pop_front();
+    if(tokAtFront.getToken() != "{") {
+        std::cout << "Unexpected token at line " << tokAtFront.getLine() << " column " 
+        << tokAtFront.getCol() << ": " << tokAtFront.getToken() << std::endl;
+        throw(3);
+    }
+
+    std::shared_ptr<std::vector<Node*>> statementsTemporary = std::make_shared<std::vector<Node*>>(FormBlock(tokens));
+    rootOfDefinition->statements = statementsTemporary; 
+    return rootOfDefinition.release();
 }
 
 Node* StatementParser::IfStatement(std::deque<Token>& tokens) {

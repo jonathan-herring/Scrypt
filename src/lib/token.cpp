@@ -37,14 +37,6 @@ Token::Token(int l, int c, std::string tokenID) {
     }
 }
 
-// //Creates token from a type
-// Token::Token(int l, int c, std::string tokenID, tokenType type) {
-//     this->line = l;
-//     this->col = c;
-//     this->tokenID = tokenID;
-//     this->type = type;
-// }
-
 void Token::print() {
     std::cout << std::right << std::setw(4) << line << std::setw(5) << col << "  " << tokenID << std::endl;
 }
