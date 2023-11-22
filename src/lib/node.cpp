@@ -232,7 +232,7 @@ IdentifierNode::IdentifierNode(std::string ID) {
 }
 
 std::string IdentifierNode::getIDName() {
-    this->getIDName();
+    return this->getIDName();
 }
 
 void IdentifierNode::print(size_t depth) {
@@ -382,7 +382,7 @@ ReturnValue StatementNode::evaluate(std::map<std::string, ReturnValue>& variable
 }
 
 void StatementNode::print(size_t depth) {
-    for (int i = 0; i < depth; ++i) {
+    for (size_t i = 0; i < depth; ++i) {
         std::cout << "    ";
     }
     if (this->statementString == "if") { 
@@ -395,7 +395,7 @@ void StatementNode::print(size_t depth) {
             Statement->print(depth + 1);
         } // PLAG MARKER
         std::cout << std::endl;
-        for(int i = 0; i < depth; ++i) {
+        for(size_t i = 0; i < depth; ++i) {
             std::cout << "    ";
         }
         std::cout << "}";
@@ -411,7 +411,7 @@ void StatementNode::print(size_t depth) {
                 Statement->print(depth + 1);
             }
             std::cout << std::endl;
-            for(int i = 0; i < depth; ++i) {
+            for(size_t i = 0; i < depth; ++i) {
                 std::cout << "    ";
             }
             std::cout << "}";
@@ -427,7 +427,7 @@ void StatementNode::print(size_t depth) {
             Statement->print(depth + 1);
         }
         std::cout << std::endl;
-        for (int i = 0; i < depth; ++i){
+        for (size_t i = 0; i < depth; ++i){
             std::cout << "    ";
         }
         std::cout << "}";
