@@ -3,12 +3,11 @@
 
 #include "parser.h"
 
-#include <vector>
-
 class StatementParser {
     private:
         std::deque<Node*> statements;
-        bool checkNext(Token& token);
+
+        bool checkNext(Token& tokenToCheck);
         Node* FormStatement(std::deque<Token>& tokens);
         std::vector<Node*> FormBlock(std::deque<Token>& tokens);
         Node* PrintStatement(std::deque<Token>& tokens);
