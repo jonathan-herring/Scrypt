@@ -36,7 +36,7 @@ Node* StatementParser::extractStatement() {
     return statementToExtract;
 }
 
-bool checkNext(Token& tokenToCheck) {
+bool StatementParser::checkNext(Token& tokenToCheck) {
     return (tokenToCheck.getType() != statement && tokenToCheck.getType() != END);
 }
 

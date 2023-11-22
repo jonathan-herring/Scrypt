@@ -72,6 +72,9 @@ ReturnValue FunctionCallVal::getValue() {
 }
 
 
+LeafNode::LeafNode(double value) {
+    this->value = value;
+}
 
 void LeafNode::print(size_t depth) {
     for (size_t i = 0; i < depth; ++i) {
