@@ -16,8 +16,8 @@ class Parser {
         void eatToken(std::deque<Token>& tokens);
 
     public:
-        Parser();
-        ~Parser();
+        Parser() {};
+        ~Parser() {};
 
         Node* parse(std::deque<Token>& tokens);
         Node* parseBigWrapper(std::deque<Token>& tokens);
