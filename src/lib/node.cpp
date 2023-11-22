@@ -4,6 +4,8 @@
 
 std::string Node::getIDName() {
     std::cout << "Runtime error" << std::endl; // Add more detail?
+    throw(3);
+    return "";
 }
 
 bool ReturnValue::operator == (ReturnValue rightValue) {
@@ -326,6 +328,19 @@ Function::~Function() {
     this->statements.reset();
 }
 
+std::vector<std::string> Function::getParameters() {
+    return this->parameters;
+}
+
+std::shared_ptr<std::vector<Node*>> Function::getStatements() {
+    return this->statements;
+}
+
+std::map<std::string, ReturnValue>* Function::getVariableMap() {
+    return this->variableMap;
+}
+
+
 
 StatementNode::StatementNode(std::string statement) {
     this->statementString = statement;
@@ -517,29 +532,112 @@ void StatementNode::evaluatePrint(std::map<std::string, ReturnValue>& variableMa
 }
 
 
-/*
-class DefinitionNode : public Node {
-    private:
-        std::vector<std::string>  parameters;
-        std::string nameOfFunction;
-        std::shared_ptr<std::vector<Node*>> statements;
-    public:
-        DefinitionNode(std::string name);
-        ~DefinitionNode();
 
-        virtual void print(size_t depth);
-        virtual ReturnValue evaluate(std::map<std::string, ReturnValue>& variableMap);
-};
+DefinitionNode::DefinitionNode(std::string name) {
+    this->nameOfFunction = name;
+}
 
-class CallNode : public Node {
-    private:
-        Node* functionToCall;
-        std::vector<Node*> arguments;
-    public:
-        CallNode(Node* functionToCall);
-        ~CallNode();
-        virtual void print(size_t depth);
+DefinitionNode::~DefinitionNode() {
+    if (this->statements.use_count() == 1){
+        for (Node* subNode : *this->statements) {
+            delete subNode;
+        }
+    }
+    this->statements.reset();
+}
 
-        void addArguments(std::vector<Node*> argumentsVector);
-        virtual ReturnValue evaluate(std::map<std::string, ReturnValue>& variableMap);
-};*/
+void DefinitionNode::print(size_t depth) {
+    for (size_t i = 0; i < depth; ++i) {
+        std::cout << "    ";
+    }
+    std::cout << "def " << this->nameOfFunction << "(";
+    for (size_t i = 0; i < this->parameters.size(); ++i) {
+        std::cout << this->parameters[i];
+        if (i != (this->parameters.size() - 1)){
+            std::cout << ", ";
+        }
+    }
+    std::cout << ") {";
+    for (size_t i = 0; i < (*statements).size(); ++i) {
+        std::cout << std::endl;
+        (*statements)[i]->print(depth + 1);
+    }
+    std::cout << std::endl;
+    for (size_t i = 0; i < depth; ++i){
+        std::cout << "    ";
+    }
+    std::cout << "}"; 
+}
+
+ReturnValue DefinitionNode::evaluate(std::map<std::string, ReturnValue>& variableMap) {
+    std::shared_ptr<Function> theFunction(new Function(variableMap, this->parameters, this->statements));
+    ReturnValue valueOfFunction(theFunction);
+    variableMap[this->nameOfFunction] = valueOfFunction;
+    return ReturnValue();
+}
+
+
+
+CallNode::CallNode(Node* functionToCall) {
+    this->functionToCall = functionToCall;
+}
+
+CallNode::~CallNode() {
+    delete this->functionToCall;
+    for (size_t i = 0; i < this->arguments.size(); ++i) {
+        delete this->arguments[i];
+    }
+}
+
+void CallNode::print(size_t depth) {
+    for (size_t i = 0; i < depth; ++i) {
+        std::cout << "    ";
+    }
+    this->functionToCall->print(0);
+    std::cout << "(";
+    for (size_t i = 0; i < this->arguments.size(); ++i) {
+        this->arguments[i]->print(0);
+        if(i != (this->arguments.size() - 1)){
+            std::cout << ", ";
+        }
+    }
+    std::cout << ")";
+}
+
+void CallNode::addArguments(std::vector<Node*> argumentsVector) {
+    this->arguments = argumentsVector;
+}
+
+ReturnValue CallNode::evaluate(std::map<std::string, ReturnValue>& variableMap) { // FIX!!!
+    std::string nameOfFunction;
+    try {
+        nameOfFunction = this->functionToCall->getIDName();
+    }
+    catch (std::runtime_error& errorMessage) {
+        std::cout << "Runtime error: function is undefined";
+        throw(3);
+    }
+    if (variableMap.find(nameOfFunction) == variableMap.end() || variableMap[nameOfFunction].getType() != FunctionType) {
+        std::cout << "Runtime error: not a function." << std::endl;
+        throw(3);
+    }
+    std::shared_ptr<Function> theFunction = std::get<std::shared_ptr<Function>>(variableMap[nameOfFunction].getVal());
+    if (this->arguments.size() != theFunction->getParameters().size()) {
+        std::cout << "Runtime error: incorrect number of arguments." << std::endl;
+        throw(3);
+    }
+    std::map<std::string, ReturnValue> variables = *theFunction->getVariableMap();
+    for (size_t i = 0; i < this->arguments.size(); ++i) {
+        variables[(theFunction->getParameters())[i]] = this->arguments[i]->evaluate(variableMap);
+    }
+    try {
+        for (Node* Statement : *theFunction->getStatements()) {
+            Statement->evaluate(variables);
+        }
+    }
+    catch (FunctionCallVal& valueReturned){
+        return ReturnValue(valueReturned.getValue());
+    }
+    return ReturnValue(nullptr);
+}
+

@@ -44,6 +44,9 @@ class Function {
         Function(std::map<std::string, ReturnValue> variableMap, std::vector<std::string> parameters, 
         std::shared_ptr<std::vector<Node*>> statements);
         ~Function();
+        std::vector<std::string> getParameters();
+        std::shared_ptr<std::vector<Node*>> getStatements();
+        std::map<std::string, ReturnValue>* getVariableMap();
 };
 
 class FunctionCallVal: public std::runtime_error {
@@ -156,9 +159,9 @@ class CallNode : public Node {
         CallNode(Node* functionToCall);
         ~CallNode();
         virtual void print(size_t depth);
+        virtual ReturnValue evaluate(std::map<std::string, ReturnValue>& variableMap);
 
         void addArguments(std::vector<Node*> argumentsVector);
-        virtual ReturnValue evaluate(std::map<std::string, ReturnValue>& variableMap);
 };
 
 #endif
