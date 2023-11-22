@@ -52,7 +52,20 @@ ReturnValue::ReturnValue(std::nullptr_t) {
     this->returnType = Nothing;
 }
 
-// Possibly implement ReturnValue for functions
+ReturnValue::ReturnValue(std::shared_ptr<Function> function) {
+    this->returnVal = function;
+    this->returnType = FunctionType;
+}
+
+
+
+FunctionCallVal::FunctionCallVal(ReturnValue valueToReturn) : std::runtime_error("Runtime error") {
+    this->storedValue = valueToReturn;
+}
+
+ReturnValue FunctionCallVal::getValue() {
+    return this->storedValue;
+}
 
 
 
@@ -314,3 +327,219 @@ Function::~Function() {
 }
 
 
+StatementNode::StatementNode(std::string statement) {
+    this->statementString = statement;
+}
+
+StatementNode::~StatementNode() {
+    delete this->conditional;
+    for (Node* subNode : this->statementsForFalse) {
+        delete subNode;
+    }
+    for (Node* subNode : this->statementsForTrue) {
+        delete subNode;
+    }
+}
+
+
+ReturnValue StatementNode::evaluate(std::map<std::string, ReturnValue>& variableMap) {
+    if (this->statementString == "return") {
+        evaluateReturn(variableMap);
+    }
+    else if (this->statementString == "if") {
+        evaluateIf(variableMap);
+    }
+    else if (this->statementString == "expression") {
+        evaluateExpression(variableMap);
+    }
+    else if (this->statementString == "print") {
+        evaluatePrint(variableMap);
+    }
+    else if (this->statementString == "while") {
+        evaluateWhile(variableMap);
+    }
+    else {
+        return ReturnValue(nullptr);
+    }
+    return ReturnValue();
+}
+
+void StatementNode::print(size_t depth) {
+    for (int i = 0; i < depth; ++i) {
+        std::cout << "    ";
+    }
+    if (this->statementString == "if") { 
+        std::cout << "if ";
+        this->conditional->print(0);
+        std::cout << " {";
+
+        for (Node* Statement : this->statementsForTrue) {
+            std::cout << std::endl;
+            Statement->print(depth + 1);
+        } // PLAG MARKER
+        std::cout << std::endl;
+        for(int i = 0; i < depth; ++i) {
+            std::cout << "    ";
+        }
+        std::cout << "}";
+        
+        if (this->statementsForFalse.size() > 0) {
+            std::cout << std::endl;
+            for (int i = 0; i < depth; ++i) {
+                std::cout << "    ";
+            }
+            std::cout << "else {";
+            for(Node* Statement : this->statementsForFalse){
+                std::cout << std::endl;
+                Statement->print(depth + 1);
+            }
+            std::cout << std::endl;
+            for(int i = 0; i < depth; ++i) {
+                std::cout << "    ";
+            }
+            std::cout << "}";
+        }
+    }
+    else if (this->statementString == "while") {
+        std::cout << "while ";
+        this->conditional->print(0);
+        std::cout << " {";
+
+        for(Node* Statement : this->statementsForTrue){
+            std::cout << std::endl;
+            Statement->print(depth + 1);
+        }
+        std::cout << std::endl;
+        for (int i = 0; i < depth; ++i){
+            std::cout << "    ";
+        }
+        std::cout << "}";
+    }
+    else if (this->statementString == "print") {
+        std::cout << "print ";
+        this->conditional->print(0);
+        std::cout << ";";
+    }
+    else if (this->statementString == "return") {
+        std::cout << "return";
+        if(this->conditional != nullptr){
+            std::cout << " ";
+            this->conditional->print(0);
+        }
+        std::cout << ";";
+    }
+    else if (this->statementString == "expression") {
+        this->conditional->print(0);
+        std::cout << ";";
+    }
+    else {
+        std::cout << "null";
+    }
+}
+
+void StatementNode::evaluateExpression(std::map<std::string, ReturnValue>& variableMap) {
+    this->conditional->evaluate(variableMap);
+    return;
+}
+
+void StatementNode::evaluateIf(std::map<std::string, ReturnValue>& variableMap) {
+    ReturnValue conditionValue(this->conditional->evaluate(variableMap));
+
+    if (conditionValue.getType() != Boolean) {
+        std::cout << "Runtime error" << std::endl;
+        throw(3);
+    }
+    if (std::get<bool>(conditionValue.getVal())){
+        for (Node* statement : this->statementsForTrue) {
+            statement->evaluate(variableMap);
+        }
+        return;
+    }
+    for (Node* statement : this->statementsForFalse){
+        statement->evaluate(variableMap);
+    }
+    return;
+}
+
+void StatementNode::evaluateReturn(std::map<std::string, ReturnValue>& variableMap) {
+    if (this->conditional == nullptr) {
+        throw FunctionCallVal(ReturnValue(nullptr));
+    }
+    ReturnValue conditionalValue(this->conditional->evaluate(variableMap));
+    throw FunctionCallVal(conditionalValue);
+}
+
+void StatementNode::evaluateWhile(std::map<std::string, ReturnValue>& variableMap) {
+    ReturnValue conditionValue(this->conditional->evaluate(variableMap));
+
+    if (conditionValue.getType() != Boolean) {
+        std::cout << "Runtime error" << std::endl;
+        throw(3);
+    }
+    if (std::get<bool>(conditionValue.getVal())) {
+        for (Node* statement : this->statementsForTrue) {
+            statement->evaluate(variableMap);
+        }
+        conditionValue = ReturnValue(conditional->evaluate(variableMap));
+
+        if (conditionValue.getType() != Boolean) {
+            std::cout << "Runtime error" << std::endl;
+            throw(3);
+        }
+    }
+    return;
+}
+
+void StatementNode::evaluatePrint(std::map<std::string, ReturnValue>& variableMap) {
+    ReturnValue conditionalValue(this->conditional->evaluate(variableMap));
+
+    typeReturnVal conditionalValueType = conditionalValue.getType();
+    if (conditionalValueType == Number) {
+        double extractedValue = std::get<double>(conditionalValue.getVal());
+        std::cout << extractedValue << std::endl;
+        return;
+    }
+    else if (conditionalValueType == Boolean) {
+        if(std::get<bool>(conditionalValue.getVal())){
+            std::cout << "true" << std::endl;
+            return;
+        } else {
+            std::cout << "false" << std::endl;
+            return;
+        }
+    }
+    else if (conditionalValueType == Nothing) {
+        std::cout << "null" << std::endl;
+        return;
+    }
+    std::cout << "Can't call print on this" << std::endl;
+    throw(3);
+}
+
+
+/*
+class DefinitionNode : public Node {
+    private:
+        std::vector<std::string>  parameters;
+        std::string nameOfFunction;
+        std::shared_ptr<std::vector<Node*>> statements;
+    public:
+        DefinitionNode(std::string name);
+        ~DefinitionNode();
+
+        virtual void print(size_t depth);
+        virtual ReturnValue evaluate(std::map<std::string, ReturnValue>& variableMap);
+};
+
+class CallNode : public Node {
+    private:
+        Node* functionToCall;
+        std::vector<Node*> arguments;
+    public:
+        CallNode(Node* functionToCall);
+        ~CallNode();
+        virtual void print(size_t depth);
+
+        void addArguments(std::vector<Node*> argumentsVector);
+        virtual ReturnValue evaluate(std::map<std::string, ReturnValue>& variableMap);
+};*/

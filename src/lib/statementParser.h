@@ -23,7 +23,6 @@ class StatementParser {
         void StatementsParse(std::deque<Token> tokens);
         bool checkForEmptiness();
         Node* extractStatement();
-
 };
 
 
