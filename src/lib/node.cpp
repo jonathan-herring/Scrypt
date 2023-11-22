@@ -295,6 +295,22 @@ ReturnValue AssignNode::evaluate(std::map<std::string, ReturnValue> variableMap)
     return rightValue;
 }
 
+Function::Function(std::map<std::string, ReturnValue> variableMap, std::vector<std::string> parameters, 
+    std::shared_ptr<std::vector<Node*>> statements) {
 
+    this->variableMap   = new std::map<std::string, ReturnValue>(variableMap);
+    this->parameters = parameters;
+    this->statements = statements;
+}
+
+Function::~Function() {
+    delete this->variableMap;
+    if (this->statements.use_count() == 1) {
+        for (Node* subNode : *this->statements) {
+            delete subNode;
+        }
+    }
+    this->statements.reset();
+}
 
 

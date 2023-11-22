@@ -5,6 +5,7 @@
 
 #include <variant>
 #include <map>
+#include <vector>
 
 enum typeReturnVal {
     Number,
@@ -31,6 +32,18 @@ class ReturnValue { // Different evaluates return different values, so we need t
 
         bool operator == (ReturnValue);
         bool operator != (ReturnValue);
+};
+
+class Function {
+    private:
+        std::shared_ptr<std::vector<Node*>> statements;
+        std::vector<std::string> parameters;
+        std::map<std::string, ReturnValue>* variableMap;
+
+    public:
+        Function(std::map<std::string, ReturnValue> variableMap, std::vector<std::string> parameters, 
+        std::shared_ptr<std::vector<Node*>> statements);
+        ~Function();
 };
 
 class Node {
@@ -92,6 +105,18 @@ class AssignNode : public Node {
         void subNodeAdd(Node* nodeToAdd);
         virtual void print(size_t depth);
         virtual ReturnValue evaluate(std::map<std::string, ReturnValue> variableMap);
+};
+
+class StatementNode : public Node {
+
+};
+
+class DefinitionNode : public Node {
+
+};
+
+class CallNode : public Node {
+
 };
 
 #endif
