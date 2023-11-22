@@ -81,65 +81,7 @@ Node* ExpressionStatement(std::deque<Token>& tokens) {
 }
 
 Node* FunctionDefinition(std::deque<Token>& tokens) {
-    Token tokAtFront = tokens.front();
-    if (tokens.front().getType() != identifier) {
-        std::cout << "Unexpected token at line " << tokAtFront.getLine() 
-        << " column " << tokAtFront.getLine() << ": " << tokAtFront.getToken() << ".";
-        throw(2);
-    }
 
-    std::unique_ptr<FunctionDefinition> definitionBase(new FunctionDefinition(tokAtFront.getToken()));
-    tokens.pop_front();
-
-    if(tokAtFront.getToken() != "(") {
-        std::cout << "Unexpected token at line " << tokAtFront.getLine() 
-        << " column " << tokAtFront.getLine() << ": " << tokAtFront.getToken() << ".";
-        throw(2);
-    }
-    tokens.pop_front();
-
-    while (tokAtFront.getToken() != ")"){ 
-        if (tokAtFront.getType() != identifier) {
-            std::cout << "Unexpected token at line " << tokAtFront.getLine() 
-            << " column " << tokAtFront.getLine() << ": " << tokAtFront.getToken() << ".";
-            throw(2);
-        }
-        definitionBase->params.push_back(tokAtFront.getToken());
-        tokens.pop_front(); // Reads parameter
-
-        if(tokAtFront.getToken() == ")"){
-            break;
-        }
-
-        if(tokAtFront.getToken() != ","){
-            std::cout << "Unexpected token at line " << tokAtFront.getLine() 
-            << " column " << tokAtFront.getLine() << ": " << tokAtFront.getToken() << ".";
-            throw(2);
-            // Expects identifier for parameter
-        }
-        tokens.pop_front(); // Reads ","
-
-        if(tokAtFront.getType() != identifier){
-            std::cout << "Unexpected token at line " << tokAtFront.getLine() 
-            << " column " << tokAtFront.getLine() << ": " << tokAtFront.getToken() << ".";
-            throw(2);
-            // Expects identifier after ","
-        }
-    }
-    tokens.pop_front(); // Reads ")"
-
-    if(tokAtFront.getToken() != "{"){
-        std::cout << "Unexpected token at line " << tokAtFront.getLine() 
-            << " column " << tokAtFront.getLine() << ": " << tokAtFront.getToken() << ".";
-            throw(2);
-        // Expects "{"
-    }
-
-    // Makes block into shared_ptr since this forest may be shared
-    std::shared_ptr<std::vector<TreeNode*>> tmpForest = std::make_shared<std::vector<TreeNode*>>(createBlock(tokens));
-    defHead->forest = tmpForest; 
-
-    return defHead.release();
 }
 
 Node* IfStatement(std::deque<Token>& tokens) {
