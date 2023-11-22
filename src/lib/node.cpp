@@ -12,7 +12,6 @@ bool ReturnValue::operator == (ReturnValue rightValue) {
     if (rightValue.getType() != this->getType()) {
         return false;
     }
-
     // Possible add a case for Function type
     if (this->getType() == Boolean) {
         return (std::get<bool>(rightValue.getVal()) == std::get<bool>(this->getVal()));

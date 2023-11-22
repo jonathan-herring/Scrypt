@@ -27,7 +27,7 @@ class ReturnValue { // Different evaluates return different values, so we need t
         ReturnValue(double numVal);
         ReturnValue(bool boolVal);
         ReturnValue(std::nullptr_t);
-        ReturnValue() {};
+        ReturnValue();
         ReturnValue(std::shared_ptr<Function> function);
 
         typeReturnVal getType() {return this->returnType;};

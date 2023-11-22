@@ -19,7 +19,7 @@ Token::Token(int l, int c, std::string tokenID) {
     } else if (isIdentifier(tokenID)) {
         this->type = identifier;
     } else if (tokenID == "<" || tokenID == "<=" || tokenID == ">" || tokenID == ">=") {
-        this ->type = op;
+        this->type = op;
     } else if (tokenID == "==" || tokenID == "!=") {
         this->type = op;
     } else if (tokenID == "&") {
