@@ -63,8 +63,8 @@ class FunctionCallVal: public std::runtime_error {
 
 class Node {
     public:
-        virtual void print(size_t depth);
-        virtual ReturnValue evaluate(std::map<std::string, ReturnValue> variableMap);
+        virtual void print(size_t depth) = 0;
+        virtual ReturnValue evaluate(std::map<std::string, ReturnValue> variableMap) {return ReturnValue();};
         virtual ~Node() {};
         virtual std::string getIDName();
 };
@@ -131,7 +131,7 @@ class StatementNode : public Node {
         ~StatementNode();
         virtual ReturnValue evaluate(std::map<std::string, ReturnValue>& variableMap);
         virtual void print(size_t depth);
-
+        
         void evaluateExpression(std::map<std::string, ReturnValue>& variableMap);
         void evaluateIf(std::map<std::string, ReturnValue>& variableMap);
         void evaluatePrint(std::map<std::string, ReturnValue>& variableMap);
