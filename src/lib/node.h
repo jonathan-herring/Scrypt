@@ -6,6 +6,7 @@
 #include <variant>
 #include <map>
 #include <vector>
+#include <memory>
 
 enum typeReturnVal {
     Number,
@@ -123,8 +124,6 @@ class StatementNode : public Node {
     private:
         Node* conditional;
         std::string statementString;
-        std::vector<Node*> statementsForTrue;
-        std::vector<Node*>  statementsForFalse;
     public:
         StatementNode(std::string statement);
         ~StatementNode();
@@ -136,6 +135,9 @@ class StatementNode : public Node {
         void evaluatePrint(std::map<std::string, ReturnValue>& variableMap);
         void evaluateReturn(std::map<std::string, ReturnValue>& variableMap);
         void evaluateWhile(std::map<std::string, ReturnValue>& variableMap);
+        void setConditional(Node* conditional);
+        std::vector<Node*> statementsForTrue;
+        std::vector<Node*>  statementsForFalse;
 };
 
 class DefinitionNode : public Node {

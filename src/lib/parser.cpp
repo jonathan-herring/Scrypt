@@ -25,6 +25,24 @@ Node* Parser::parse(std::deque<Token>& tokens) {
     return base.release();
 }
 
+Node* Parser::parseBigWrapper(std::deque<Token>& tokens) {
+    std::unique_ptr<Node> tree;
+    tree.reset(parse(tokens));
+    tokens.push_front(nextToken);
+    return tree.release();
+}
+
+Node* Parser::parseSmallWrapper(std::deque<Token>& tokens) {
+    std::unique_ptr<Node> tree;
+    tree.reset(parse(tokens));
+    if (nextToken.getToken() != "END") {
+        std::cout << "Unexpected token at line " << nextToken.getLine() << " column " 
+        << nextToken.getCol() << ": " << nextToken.getToken() << std::endl;
+        throw(2);
+    }
+    return tree.release();
+}
+
 Node* Parser::parseOperand(std::deque<Token>& tokens) {
     if (this->nextToken.getToken() == "") {
         std::cout << "Parse error" << std::endl; // Add more details later

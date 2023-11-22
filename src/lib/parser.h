@@ -20,7 +20,8 @@ class Parser {
         ~Parser();
 
         Node* parse(std::deque<Token>& tokens);
-
+        Node* parseBigWrapper(std::deque<Token>& tokens);
+        Node* parseSmallWrapper(std::deque<Token>& tokens);
         Node* parseOperand(std::deque<Token>& tokens); // This includes numbers, parentheses, and identifiers
         Node* parseAssign(std::deque<Token>& tokens); //
         Node* parseEquals(std::deque<Token>& tokens);

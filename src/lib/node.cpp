@@ -356,6 +356,9 @@ StatementNode::~StatementNode() {
     }
 }
 
+void StatementNode::setConditional(Node* conditional) {
+    this->conditional = conditional;
+}
 
 ReturnValue StatementNode::evaluate(std::map<std::string, ReturnValue>& variableMap) {
     if (this->statementString == "return") {
