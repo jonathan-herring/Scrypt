@@ -238,7 +238,7 @@ ReturnValue IdentifierNode::evaluate(std::map<std::string, ReturnValue> variable
 
 
 
-BoolNode::BoolNode(bool boolValue) {
+BoolNode::BoolNode(std::string boolValue) {
     this->boolValue = boolValue;
 }
 
@@ -250,7 +250,11 @@ void BoolNode::print(size_t depth) {
 }
 
 ReturnValue BoolNode::evaluate(std::map<std::string, ReturnValue> variableMap) {
-    return ReturnValue(this->boolValue);
+    if (this->boolValue == "true") {
+        return ReturnValue(true);
+    } else{
+        return ReturnValue(false);
+    }
 }
 
 

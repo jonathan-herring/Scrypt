@@ -26,7 +26,42 @@ Node* Parser::parse(std::deque<Token>& tokens) {
 }
 
 Node* Parser::parseOperand(std::deque<Token>& tokens) {
+    if (this->nextToken.getToken() == "") {
+        std::cout << "Parse error" << std::endl; // Add more details later
+        throw(2);
+    }
+    if (this->nextToken.getType() == booleanVal) {
+        std::unique_ptr<BoolNode> boolean(new BoolNode(this->nextToken.getToken()));
+        eatToken(tokens);
+        return boolean.release();
+    }
+    else if (this->nextToken.getType() == identifier) {
+        std::unique_ptr<IdentifierNode> nodeLeaf(new IdentifierNode(nextToken.getToken()));
+        eatToken(tokens);
+        return nodeLeaf.release();
+    }
+    else if (this->nextToken.getType() == number) {
+        std::unique_ptr<LeafNode> leafNode(new LeafNode(std::stold(nextToken.getToken())));
+        eatToken(tokens);
+        return leafNode.release();
+    }
+    else if (this->nextToken.getToken() == "(") {
+        eatToken(tokens);
+        std::unique_ptr<Node> variableNode(parseAssign(tokens));
 
+        if (nextToken.getToken() == ")") {
+            eatToken(tokens);
+            return variableNode.release();
+        } else {
+            std::cout << "Parse Error: Missing closing parenthesis" << std::endl;
+            throw(2);
+        }
+    }
+    else {
+        std::cout << "Parse error";
+        throw(2);
+    }
+    return nullptr;
 }
 
 Node* Parser::parseAssign(std::deque<Token>& tokens) {
@@ -59,7 +94,12 @@ Node* Parser::parseEquals(std::deque<Token>& tokens) {
             std::cout << "Invalid comparison" << std::endl; // Possibly change error message later
             throw(2);
         }
+
+        std::unique_ptr<OpNode> operatorNode(new OpNode(operation));
+        operatorNode->subNodeAdd(leftSide.release());
+        operatorNode->subNodeAdd(rightSide.release());
     }
+    return leftSide.release();
 }
 
 Node* Parser::parseCompare(std::deque<Token>& tokens) {
@@ -107,17 +147,79 @@ Node* Parser::parsePlusMinus(std::deque<Token>& tokens) {
 }
 
 Node* Parser::parseDivMult(std::deque<Token>& tokens) {
+    std::unique_ptr<Node> leftSide(parseFunction(tokens));
+
+    std::string nextTokenValue = nextToken.getToken();
+    while (nextTokenValue == "%" || nextTokenValue == "*" || nextTokenValue == "/") {
+        eatToken(tokens);
+        std::unique_ptr<Node> rightSide(parseFunction(tokens));
+        if (leftSide == nullptr || rightSide == nullptr) {
+            std::cout << "Parse error" << std::endl;
+            throw(2);
+        }
+        std::unique_ptr<OpNode> operationNode(new OpNode(nextTokenValue));
+        operationNode->subNodeAdd(leftSide.release());
+        operationNode->subNodeAdd(rightSide.release());
+    }
+    return leftSide.release();
+}
+
+Node* Parser::parseFunction(std::deque<Token>& tokens) {
 
 }
 
 Node* Parser::parseIor(std::deque<Token>& tokens) {
+    std::unique_ptr<Node> leftSide(parseXor(tokens));
 
+    while (nextToken.getToken() == "|") {
+        std::string operation = this->nextToken.getToken();
+        eatToken(tokens);
+        std::unique_ptr<Node> rightSide(parseXor(tokens));
+        if (leftSide == nullptr || rightSide == nullptr) {
+            std::cout << "Parse error" << std::endl;
+            throw(2);
+        }
+        std::unique_ptr<OpNode> operationNode(new OpNode(operation));
+        operationNode->subNodeAdd(leftSide.release());
+        operationNode->subNodeAdd(rightSide.release());
+        leftSide.reset(operationNode.release());
+    }
+    return leftSide.release();
 }
 
 Node* Parser::parseXor(std::deque<Token>& tokens) {
+    std::unique_ptr<Node> leftSide(parseAnd(tokens));
 
+    while (nextToken.getToken() == "^") {
+        std::string operation = this->nextToken.getToken();
+        eatToken(tokens);
+        std::unique_ptr<Node> rightSide(parseAnd(tokens));
+        if (leftSide == nullptr || rightSide == nullptr) {
+            throw(2);
+        }
+        std::unique_ptr<OpNode> operationNode(new OpNode(operation));
+        operationNode->subNodeAdd(leftSide.release());
+        operationNode->subNodeAdd(rightSide.release());
+        leftSide.reset(operationNode.release());
+    }
+    return leftSide.release();
 }
 
 Node* Parser::parseAnd(std::deque<Token>& tokens) {
+    std::unique_ptr<Node> leftSide(parseEquals(tokens));
 
+    while (nextToken.getToken() == "&") {
+        std::string operation = nextToken.getToken();
+        eatToken(tokens);
+        std::unique_ptr<Node> rightSide(parseEquals(tokens));
+        if (rightSide == nullptr || leftSide == nullptr) {
+            std::cout << "Parse error" << std::endl;
+            throw(2);
+        }
+        std::unique_ptr<OpNode> operationNode(new OpNode(operation));
+        operationNode->subNodeAdd(leftSide.release());
+        operationNode->subNodeAdd(rightSide.release());
+        leftSide.reset(operationNode.release());
+    }
+    return leftSide.release();
 }

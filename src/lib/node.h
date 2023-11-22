@@ -76,9 +76,9 @@ class IdentifierNode : public Node {
 
 class BoolNode : public Node {
     private:
-        bool boolValue;
+        std::string boolValue;
     public:
-        BoolNode(bool boolValue);
+        BoolNode(std::string boolValue);
         virtual void print(size_t depth);
         virtual ReturnValue evaluate(std::map<std::string, ReturnValue> variableMap);
 };

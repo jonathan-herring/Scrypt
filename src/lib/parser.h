@@ -16,6 +16,9 @@ class Parser {
         void eatToken(std::deque<Token>& tokens);
 
     public:
+        Parser();
+        ~Parser();
+
         Node* parse(std::deque<Token>& tokens);
 
         Node* parseOperand(std::deque<Token>& tokens); // This includes numbers, parentheses, and identifiers
@@ -27,6 +30,7 @@ class Parser {
         Node* parseIor(std::deque<Token>& tokens); // Inclusive or - |
         Node* parseXor(std::deque<Token>& tokens); // Exclusive or - ^
         Node* parseAnd(std::deque<Token>& tokens); //
+        Node* parseFunction(std::deque<Token>& tokens);
 
         // Node* parseFunction(std::deque<Token>& tokens);
         

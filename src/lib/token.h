@@ -13,6 +13,7 @@ enum tokenType {
     number,
     identifier,
     statement,
+    booleanVal,
     other,
     ERROR,
     END,
