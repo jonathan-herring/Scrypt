@@ -2,13 +2,19 @@
 #define LEX_H
 
 #include "token.h"
-#include <vector>
+
+#include <deque>
+
 
 class Lexer
 {
     public:
-        Lexer() {};
-        std::vector<Token> tokenize(std::string input);
+        void tokenize(std::string input);
+        std::deque<Token> getDeque();
+        void print();
+
+    private:
+        std::deque<Token> tokens;
 };
 
 #endif

@@ -1,4 +1,4 @@
-#include "lib/prefixParser.h"
+#include "lib/parser.h"
 #include "lib/lex.h"
 
 int main () {
