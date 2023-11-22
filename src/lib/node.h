@@ -16,6 +16,8 @@ enum typeReturnVal {
     Undefined
 };
 
+class Function;
+class Node;
 class ReturnValue { // Different evaluates return different values, so we need this 
     private:
         typeReturnVal returnType;
