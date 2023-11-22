@@ -85,7 +85,7 @@ std::vector<Node*> StatementParser::FormBlock(std::deque<Token>& tokens) {
     return block;
 }
 
-Node* PrintStatement(std::deque<Token>& tokens) {
+Node* StatementParser::PrintStatement(std::deque<Token>& tokens) {
     std::unique_ptr<StatementNode> rootOfStatement(new StatementNode("print"));
     Parser p;
     rootOfStatement->setConditional(p.parseBigWrapper(tokens)); // FIXXXX
