@@ -108,15 +108,48 @@ class AssignNode : public Node {
 };
 
 class StatementNode : public Node {
+    private:
+        Node* conditional;
+        std::string statementString;
+        std::vector<Node*> statementsForTrue;
+        std::vector<Node*>  statementsForFalse;
+    public:
+        StatementNode(std::string statement);
+        ~StatementNode();
+        virtual ReturnValue evaluate(std::map<std::string, ReturnValue>& variableMap);
+        virtual void print(size_t depth);
 
+        void evaluateExpression(std::map<std::string, ReturnValue>& variableMap);
+        void evaluateIf(std::map<std::string, ReturnValue>& variableMap);
+        void evaluatePrint(std::map<std::string, ReturnValue>& variableMap);
+        void evaluateReturn(std::map<std::string, ReturnValue>& variableMap);
+        void evaluateWhile(std::map<std::string, ReturnValue>& variableMap);
 };
 
 class DefinitionNode : public Node {
+    private:
+        std::vector<std::string>  parameters;
+        std::string nameOfFunction;
+        std::shared_ptr<std::vector<Node*>> statements;
+    public:
+        DefinitionNode(std::string name);
+        ~DefinitionNode();
 
+        virtual void print(size_t depth);
+        virtual ReturnValue evaluate(std::map<std::string, ReturnValue>& variableMap);
 };
 
 class CallNode : public Node {
+    private:
+        Node* functionToCall;
+        std::vector<Node*> arguments;
+    public:
+        CallNode(Node* functionToCall);
+        ~CallNode();
+        virtual void print(size_t depth);
 
+        void addArguments(std::vector<Node*> argumentsVector);
+        virtual ReturnValue evaluate(std::map<std::string, ReturnValue>& variableMap);
 };
 
 #endif
