@@ -35,6 +35,8 @@ Token::Token(int l, int c, std::string tokenID) {
         this->type = other;
     } else if (tokenID == "{" || tokenID == "}") {
         this->type = other;
+    } else if (tokenID == "[" || tokenID == "]") {
+        this->type = bracketArray;
     } else {
         this->type = ERROR;
     }

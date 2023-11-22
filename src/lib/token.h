@@ -14,6 +14,7 @@ enum tokenType {
     statement,
     booleanVal,
     other,
+    bracketArray,
     ERROR,
     END,
 };

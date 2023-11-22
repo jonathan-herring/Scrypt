@@ -104,6 +104,11 @@ std::deque<Token> Lexer::tokenize(std::string input) {
             tokens.push_back(token);
             temp = "";
         }
+        else if ((input[i] == '[') || (input[i] == ']')) {
+            token = Token(line, col, temp);
+            tokens.push_back(token);
+            temp = "";
+        }
         else if ((input[i] == '+') || (input[i] == '-') || (input[i] == '*') || (input[i] == '/') || input[i] == '%') { // Add modulo and token for modulo
             token = Token(line, col, temp);
             tokens.push_back(token);
