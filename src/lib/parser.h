@@ -33,8 +33,7 @@ class Parser {
         Node* parseAnd(std::deque<Token>& tokens); //
         Node* parseFunction(std::deque<Token>& tokens);
 
-        // Node* parseFunction(std::deque<Token>& tokens);
-        
+        std::vector<Node*> parseFunctionArguments(std::deque<Token>& tokens);
 };
 
-#endif PARSER_H
+#endif

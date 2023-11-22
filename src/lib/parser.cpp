@@ -183,7 +183,13 @@ Node* Parser::parseDivMult(std::deque<Token>& tokens) {
 }
 
 Node* Parser::parseFunction(std::deque<Token>& tokens) {
-
+    std::unique_ptr<Node> leftValue(parseOperand(tokens));
+    while (this->nextToken.getToken() == "("){
+        std::unique_ptr<CallNode> functionNode(new CallNode(leftValue.release()));
+        functionNode->addArguments(parseFunctionArguments(tokens));
+        leftValue.reset(functionNode.release());
+    }
+    return leftValue.release();
 }
 
 Node* Parser::parseIor(std::deque<Token>& tokens) {
@@ -240,4 +246,40 @@ Node* Parser::parseAnd(std::deque<Token>& tokens) {
         leftSide.reset(operationNode.release());
     }
     return leftSide.release();
+}
+
+std::vector<Node*> Parser::parseFunctionArguments(std::deque<Token>& tokens) {
+    std::string openingBound = nextToken.getToken();
+    eatToken(tokens);
+    std::string closingBound;
+    if (openingBound == "(") {
+        closingBound = ")";
+    } else {
+        closingBound = "]";
+    }
+    std::vector<Node*> arguments;
+    if (nextToken.getToken() == closingBound) {
+        eatToken(tokens);
+        return arguments;
+    }
+    arguments.push_back(parseAssign(tokens));
+    if (nextToken.getToken() != closingBound && nextToken.getToken() != ",") {
+        std::cout << "Unexpected token at line " << nextToken.getLine() << " column " 
+        << nextToken.getCol() << ": " << nextToken.getToken() << std::endl;
+        throw(3);
+    }
+    while (nextToken.getToken() != closingBound) {
+        eatToken(tokens);
+        arguments.push_back(parseAssign(tokens));
+        if (nextToken.getToken() == closingBound) {
+            break;
+        }
+        if (nextToken.getToken() != ",") {
+            std::cout << "Unexpected token at line " << nextToken.getLine() << " column " 
+            << nextToken.getCol() << ": " << nextToken.getToken() << std::endl;
+            throw(3);
+        }
+    }
+    eatToken(tokens);
+    return arguments;
 }
