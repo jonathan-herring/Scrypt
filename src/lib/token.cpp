@@ -28,8 +28,11 @@ Token::Token(int l, int c, std::string tokenID) {
         this->type = op;
     } else if (tokenID == "|") {
         this->type = op;
-    } else if (tokenID == "if" || tokenID == "while" || tokenID == "print" || tokenID == "else") {
+    } else if (tokenID == "if" || tokenID == "while" || tokenID == "print" 
+    || tokenID == "else" || tokenID == "def" || tokenID == "return") {
         this->type = statement;
+    } else if (tokenID == "null" || tokenID == "," || tokenID == ";") {
+        this->type = other;
     } else if (tokenID == "{" || tokenID == "}") {
         this->type = other;
     } else {

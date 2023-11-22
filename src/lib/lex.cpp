@@ -11,10 +11,10 @@ std::deque<Token> Lexer::tokenize(std::string input) {
     for (size_t i = 0; (unsigned)i < input.length(); i++) {
         col++;
         temp += input[i];
-        //std::cout << "temp: " << temp << " line: " << token.getLine() << " col " << token.getCol() << std::endl;
 
         //bools
-        if (temp == "true" || temp == "false" || temp == "if" || temp == "while" || temp == "print" || temp == "else") {
+        if (temp == "true" || temp == "false" || temp == "if" || temp == "while" 
+        || temp == "print" || temp == "else" || temp == "def" || temp == "null") {
             token = Token(line, col - temp.length() + 1, temp);
             tokens.push_back(token);
             temp = "";
@@ -24,7 +24,7 @@ std::deque<Token> Lexer::tokenize(std::string input) {
 
             continue;
         }
-        else if(input[i] == '{' || input[i] == '}'){
+        else if(input[i] == '{' || input[i] == '}' || input[i] == ',' || input[i] == ';'){
             token = Token(line, col, temp);
             tokens.push_back(token);
             temp = "";
