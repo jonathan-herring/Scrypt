@@ -33,7 +33,7 @@ class Token {
         Token(int l, int c, std::string tokenID);
         // Token(int l, int c, std::string tokenID, tokenType type);
         tokenType getType() { return type; };
-        void setType(tokenType type) {this->type == type;};
+        void setType(tokenType type) {this->type = type;};
         std::string getToken() { return tokenID; };
         int getLine() { return line; };
         int getCol() { return col; };

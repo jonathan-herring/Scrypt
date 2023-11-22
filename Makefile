@@ -11,8 +11,8 @@ testPrefix: src/testPrefix.cpp src/lib/prefixParser.h src/lib/token.cpp src/lib/
 calc: src/calc.cpp src/lib/infixParser.h src/lib/token.cpp src/lib/lex.cpp
 	g++ $(CXXFLAGS) -o calc src/calc.cpp src/lib/infixParser.h src/lib/token.cpp src/lib/lex.cpp
 
-parse: src/parse.cpp src/lib/infixParser.h src/lib/token.cpp src/lib/lex.cpp
-	g++ $(CXXFLAGS) -o parse src/parse.cpp src/lib/infixParser.h src/lib/token.cpp src/lib/lex.cpp
+parse: src/parse.cpp src/lib/parser.cpp src/lib/token.cpp src/lib/lex.cpp src/lib/node.cpp
+	g++ $(CXXFLAGS) -o parse src/parse.cpp src/lib/parser.cpp src/lib/token.cpp src/lib/lex.cpp src/lib/node.cpp
 
 lex: src/lex.cpp src/lib/lex.cpp src/lib/token.cpp
 	g++ $(CXXFLAGS) -o lex src/lex.cpp src/lib/lex.cpp src/lib/token.cpp

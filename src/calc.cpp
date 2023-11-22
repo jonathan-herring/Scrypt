@@ -6,7 +6,7 @@ int main() {
 
     std::map<std::string, double> variables;
     std::string input = "";
-    std::vector<Token> tokens;
+    std::deque<Token> tokens;
     Lexer lex;
 
     while (getline(std::cin, input)) {
@@ -22,13 +22,6 @@ int main() {
         // Check for Parse errors
 
         Node* head;
-
-        // if (!isValidExpression(tokens)) {    // New addition - not fullproof
-        //     std::cout << "Error: Invalid expression." << std::endl;
-        //     deleteAST(head);
-        //     continue;
-        // }
-
         try {
             if (!isValidExpression(tokens))   // New addition - not fullproof
                 throw 2;
