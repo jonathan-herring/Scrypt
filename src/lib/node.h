@@ -11,24 +11,24 @@ enum typeReturnVal {
     Number,
     Boolean,
     Nothing, // Null
-    Function,
+    FunctionType,
     Undefined
 };
 
 class ReturnValue { // Different evaluates return different values, so we need this 
     private:
         typeReturnVal returnType;
-        std::variant<bool, double> returnVal;
+        std::variant<bool, double, std::shared_ptr<Function>> returnVal;
 
     public:
         ReturnValue(double numVal);
         ReturnValue(bool boolVal);
         ReturnValue(std::nullptr_t);
         ReturnValue() {};
-        // Possible ReturnValue for functions
+        ReturnValue(std::shared_ptr<Function> function);
 
         typeReturnVal getType() {return this->returnType;};
-        std::variant<bool, double> getVal() {return returnVal;};
+        std::variant<bool, double, std::shared_ptr<Function>> getVal() {return returnVal;};
 
         bool operator == (ReturnValue);
         bool operator != (ReturnValue);
@@ -44,6 +44,15 @@ class Function {
         Function(std::map<std::string, ReturnValue> variableMap, std::vector<std::string> parameters, 
         std::shared_ptr<std::vector<Node*>> statements);
         ~Function();
+};
+
+class FunctionCallVal: public std::runtime_error {
+    private:
+        ReturnValue storedValue;
+
+    public:
+        FunctionCallVal(ReturnValue valueToReturn);
+        ReturnValue getValue();
 };
 
 class Node {
