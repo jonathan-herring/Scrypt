@@ -25,6 +25,9 @@ bool ReturnValue::operator == (ReturnValue rightValue) {
     else if (this->getType() == Undefined) {
         throw(3); // Possibly add a detailed cout statement later on
     }
+    else {
+        throw(3);
+    }
 }
 
 bool ReturnValue::operator != (ReturnValue rightValue) {
@@ -147,14 +150,14 @@ ReturnValue OpNode::evaluateComparison(std::map<std::string, ReturnValue> variab
         double right = std::get<bool>(rightValue.getVal());
 
         if (this->op == "^") {
-            return ReturnValue((std::get<bool>(leftValue.getVal()) && !std::get<bool>(rightValue.getVal())) 
-            || (!std::get<bool>(leftValue.getVal()) && std::get<bool>(rightValue.getVal())));
+            return ReturnValue((left && !right) 
+            || (!left && right));
         }
         else if (this->op == "|") {
-            return ReturnValue(std::get<bool>(leftValue.getVal()) || std::get<bool>(rightValue.getVal()));
+            return ReturnValue(left || right);
         }
         else if (this->op == "&") {
-            return ReturnValue(std::get<bool>(leftValue.getVal()) && std::get<bool>(rightValue.getVal()));
+            return ReturnValue(left && right);
         }
     }
     else if (this->op == "==") {
@@ -402,7 +405,7 @@ void StatementNode::print(size_t depth) {
         
         if (this->statementsForFalse.size() > 0) {
             std::cout << std::endl;
-            for (int i = 0; i < depth; ++i) {
+            for (size_t i = 0; i < depth; ++i) {
                 std::cout << "    ";
             }
             std::cout << "else {";
