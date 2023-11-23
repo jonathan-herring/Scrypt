@@ -27,7 +27,7 @@ int main() {
         try {
             std::map<std::string, ReturnValue> volatileVars = variableMap;
 
-            head.reset(parse.parse(tokens));
+            head.reset(parse.parseFunction(tokens));
 
             // Print
             head->print(1);
