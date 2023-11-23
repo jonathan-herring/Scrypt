@@ -137,15 +137,22 @@ Node* StatementParser::ExpressionStatement(std::deque<Token>& tokens) {
     Parser p;
     rootOfStatement->setConditional(p.parseBigWrapper(tokens));
 
-    Token tokAtFront = tokens.front();
-    if (tokAtFront.getToken() != ";") {
-        std::cout << "Unexpected token at line " << tokAtFront.getLine() << " column " 
-        << tokAtFront.getCol() << ": " << tokAtFront.getToken() << std::endl;
+    if (tokens.empty()) {
+        std::cout << "Unexpected end of input." << std::endl;
         throw(2);
     }
+
+    Token tokAtFront = tokens.front();
+    if (tokAtFront.getToken() != ";") {
+        std::cout << "Unexpected token at line " << tokAtFront.getLine() << " column "
+                  << tokAtFront.getCol() << ": " << tokAtFront.getToken() << std::endl;
+        throw(2);
+    }
+
     tokens.pop_front();
     return rootOfStatement.release();
 }
+
 Node* StatementParser::FunctionDefinition(std::deque<Token>& tokens) {
     Token tokAtFront = tokens.front();
     if (tokAtFront.getType() != identifier) {
