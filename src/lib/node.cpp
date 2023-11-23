@@ -352,7 +352,9 @@ StatementNode::StatementNode(std::string statement) {
 }
 
 StatementNode::~StatementNode() {
-    delete this->conditional;
+    if(this->conditional != nullptr){
+        delete this->conditional;
+    }
     for (Node* subNode : this->statementsForFalse) {
         delete subNode;
     }
