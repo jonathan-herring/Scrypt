@@ -77,7 +77,7 @@ Node* Parser::parseOperand(std::deque<Token>& tokens) {
     }
     else {
         //std::cout << "Parse error b";
-        std::cout << "Unexpected token at line " << nextToken.getLine() << ": " << nextToken.getToken() << std::endl;
+        std::cout << "Unexpected token at " << " column " << nextToken.getCol() << ": " << nextToken.getToken() << std::endl;
         throw(2);
     }
     return nullptr;
