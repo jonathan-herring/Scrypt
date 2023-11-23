@@ -3,11 +3,11 @@
 #include <iostream>
 
 int main() {
-
-    std::map<std::string, double> variables;
+    std::map<std::string, ReturnValue> variableMap;
     std::string input = "";
     std::deque<Token> tokens;
     Lexer lex;
+    Parser parse;
 
     while (getline(std::cin, input)) {
 
@@ -21,31 +21,39 @@ int main() {
         }
         // Check for Parse errors
 
-        Node* head;
+        std::unique_ptr<Node> head;
+        
         try {
-            if (!isValidExpression(tokens))   // New addition - not fullproof
-                throw 2;
-            head = buildAST(tokens);
+            std::map<std::string, ReturnValue> volatileVars = variableMap;
+
+            head.reset(parse.parseSmallWrapper(tokens));
+
+            // Print
+            head->print(1);
+            std::cout << std::endl;
+
+            // Evaluation
+            ReturnValue result(head->evaluate(volatileVars));
+
+            if (result.getType() == Number) {
+                std::cout << std::get<double>(result.getVal()) << std::endl;
+            } 
+            else if (result.getType() == Boolean) {
+                if (std::get<bool>(result.getVal())) {
+                    std::cout << "true" << std::endl;
+                } else if (!(std::get<bool>(result.getVal()))) {
+                    std::cout << "false" << std::endl;
+                }
+            }
+            variableMap = volatileVars;
         } catch (int exitCode) {
             if (exitCode == 2) {
-                deleteAST(head);
                 continue;
             }
-        }
-
-        printAST(head);
-        std::cout << std::endl;
-        // Check for Runtime errors
-        try {
-            std::cout << evaluateAST(head, variables) << std::endl;
-        } catch (int exitCode) {
             if (exitCode == 3) {
-                deleteAST(head);
                 continue;
             }
         }
-
-        deleteAST(head);
     }
 
     return 0;
