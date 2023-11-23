@@ -183,7 +183,7 @@ ReturnValue OpNode::evaluateBinOp(std::map<std::string, ReturnValue> variableMap
 
     if (op == "+") {
         ReturnValue rightValue(this->right->evaluate(variableMap));
-        if(rightValue.getType() != Number) {
+        if (rightValue.getType() != Number) {
             throw(3);
             // Needs only numbers
         }
@@ -198,7 +198,7 @@ ReturnValue OpNode::evaluateBinOp(std::map<std::string, ReturnValue> variableMap
     }
     else if (op == "/") {
         ReturnValue rightValue(this->right->evaluate(variableMap));
-        if(rightValue.getType() != Number) {
+        if (rightValue.getType() != Number) {
             throw(3);
         }
 
@@ -211,7 +211,7 @@ ReturnValue OpNode::evaluateBinOp(std::map<std::string, ReturnValue> variableMap
     }
     else if (op == "%") {
         ReturnValue rightValue(this->right->evaluate(variableMap));
-        if(rightValue.getType() != Number) {
+        if (rightValue.getType() != Number) {
             throw(3);
         }
         if (std::get<double>(rightValue.getVal()) == 0){
@@ -222,7 +222,7 @@ ReturnValue OpNode::evaluateBinOp(std::map<std::string, ReturnValue> variableMap
     }
     else if (op == "*") { 
         ReturnValue rightValue(this->right->evaluate(variableMap));
-        if(rightValue.getType() != Number){
+        if (rightValue.getType() != Number){
             throw(3);
         }
         calculation *= std::get<double>(rightValue.getVal());
@@ -405,7 +405,7 @@ void StatementNode::print(size_t depth) {
             Statement->print(depth + 1);
         }
         std::cout << std::endl;
-        for(size_t i = 0; i < depth; ++i) {
+        for (size_t i = 0; i < depth; ++i) {
             std::cout << "    ";
         }
         std::cout << "}";
@@ -416,12 +416,12 @@ void StatementNode::print(size_t depth) {
                 std::cout << "    ";
             }
             std::cout << "else {";
-            for(Node* Statement : this->statementsForFalse){
+            for (Node* Statement : this->statementsForFalse){
                 std::cout << std::endl;
                 Statement->print(depth + 1);
             }
             std::cout << std::endl;
-            for(size_t i = 0; i < depth; ++i) {
+            for (size_t i = 0; i < depth; ++i) {
                 std::cout << "    ";
             }
             std::cout << "}";
@@ -432,7 +432,7 @@ void StatementNode::print(size_t depth) {
         this->conditional->print(0);
         std::cout << " {";
 
-        for(Node* Statement : this->statementsForTrue){
+        for (Node* Statement : this->statementsForTrue){
             std::cout << std::endl;
             Statement->print(depth + 1);
         }
@@ -449,7 +449,7 @@ void StatementNode::print(size_t depth) {
     }
     else if (this->statementString == "return") {
         std::cout << "return";
-        if(this->conditional != nullptr){
+        if (this->conditional != nullptr){
             std::cout << " ";
             this->conditional->print(0);
         }
@@ -527,7 +527,7 @@ void StatementNode::evaluatePrint(std::map<std::string, ReturnValue>& variableMa
         return;
     }
     else if (conditionalValueType == Boolean) {
-        if(std::get<bool>(conditionalValue.getVal())){
+        if (std::get<bool>(conditionalValue.getVal())){
             std::cout << "true" << std::endl;
             return;
         }
@@ -610,7 +610,7 @@ void CallNode::print(size_t depth) {
     std::cout << "(";
     for (size_t i = 0; i < this->arguments.size(); ++i) {
         this->arguments[i]->print(0);
-        if(i != (this->arguments.size() - 1)){
+        if (i != (this->arguments.size() - 1)){
             std::cout << ", ";
         }
     }

@@ -23,7 +23,7 @@ std::deque<Token> Lexer::tokenize(std::string input) {
 
             continue;
         }
-        else if(input[i] == '{' || input[i] == '}' || input[i] == ',' || input[i] == ';'){
+        else if (input[i] == '{' || input[i] == '}' || input[i] == ',' || input[i] == ';'){
             token = Token(line, col, temp);
             tokens.push_back(token);
             temp = "";
@@ -47,13 +47,13 @@ std::deque<Token> Lexer::tokenize(std::string input) {
             }
             //== operator
             else if (input[i-1] == '=') {
-                if(tokens.back().getToken() != "<=" && tokens.back().getToken() != ">="  &&
+                if (tokens.back().getToken() != "<=" && tokens.back().getToken() != ">="  &&
                 tokens.back().getToken() != "!=" && tokens.back().getToken() != "=="){
                     token = Token(line, col - 1, "==");
                     tokens.push_back(token);
                     temp = "";
                 }
-                else if(input[i+1] != '='){
+                else if (input[i+1] != '='){
                    token = Token(line, col, temp);
                     tokens.push_back(token);
                     temp = ""; 

@@ -14,7 +14,8 @@ int main() {
         // Check for Lex errors
         try {
             tokens = lex.tokenize(input);
-        } catch (int exitCode) {
+        }
+        catch (int exitCode) {
             if (exitCode == 1) {
                 continue;
             }
@@ -41,12 +42,14 @@ int main() {
             else if (result.getType() == Boolean) {
                 if (std::get<bool>(result.getVal())) {
                     std::cout << "true" << std::endl;
-                } else if (!(std::get<bool>(result.getVal()))) {
+                }
+                else if (!(std::get<bool>(result.getVal()))) {
                     std::cout << "false" << std::endl;
                 }
             }
             variableMap = volatileVars;
-        } catch (int exitCode) {
+        }
+        catch (int exitCode) {
             if (exitCode == 2) {
                 continue;
             }

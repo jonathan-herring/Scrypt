@@ -12,7 +12,7 @@ void StatementParser::StatementsParse(std::deque<Token> tokens) {
     Token tokAtFront = tokens.front();
 
     while (tokAtFront.getType() != END) {
-        if(tokAtFront.getType() == other) {
+        if (tokAtFront.getType() == other) {
             Token tokAtFront = tokens.front();
             std::cout << "Unexpected token at line " << tokAtFront.getLine() 
             << " column " << tokAtFront.getLine() << ": " << tokAtFront.getToken() << ".";
@@ -165,7 +165,7 @@ Node* StatementParser::FunctionDefinition(std::deque<Token>& tokens) {
     }
     tokens.pop_front();
 
-    while(tokAtFront.getToken() != ")"){ 
+    while (tokAtFront.getToken() != ")"){ 
         if (tokAtFront.getType() != identifier) {
             std::cout << "Unexpected token at line " << tokAtFront.getLine() << " column " 
             << tokAtFront.getCol() << ": " << tokAtFront.getToken() << std::endl;
@@ -189,7 +189,7 @@ Node* StatementParser::FunctionDefinition(std::deque<Token>& tokens) {
         }
     }
     tokens.pop_front();
-    if(tokAtFront.getToken() != "{") {
+    if (tokAtFront.getToken() != "{") {
         std::cout << "Unexpected token at line " << tokAtFront.getLine() << " column " 
         << tokAtFront.getCol() << ": " << tokAtFront.getToken() << std::endl;
         throw(3);
@@ -206,7 +206,7 @@ Node* StatementParser::IfStatement(std::deque<Token>& tokens) {
     rootOfStatement->setConditional(p.parseBigWrapper(tokens));
     
     Token tokAtFront = tokens.front();
-    if(tokAtFront.getToken() != "{") {
+    if (tokAtFront.getToken() != "{") {
         std::cout << "Unexpected token at line " << tokAtFront.getLine() << " column " 
         << tokAtFront.getCol() << ": " << tokAtFront.getToken() << std::endl;
         throw(2);
@@ -214,7 +214,7 @@ Node* StatementParser::IfStatement(std::deque<Token>& tokens) {
     }
     rootOfStatement->statementsForTrue = FormBlock(tokens);
 
-    if(tokAtFront.getToken() != "else") {
+    if (tokAtFront.getToken() != "else") {
         return rootOfStatement.release();
     }
     tokens.pop_front();
