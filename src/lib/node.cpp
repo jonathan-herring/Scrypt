@@ -132,7 +132,6 @@ ReturnValue OpNode::evaluateComparison(std::map<std::string, ReturnValue> variab
     ReturnValue rightValue(this->right->evaluate(variableMap));
 
     if (leftValue.getType() == Number) {
-
         double left = std::get<double>(leftValue.getVal());
         double right = std::get<double>(rightValue.getVal());
 
@@ -150,7 +149,6 @@ ReturnValue OpNode::evaluateComparison(std::map<std::string, ReturnValue> variab
         }
     }
     else if (leftValue.getType() == Boolean) {
-
         double left = std::get<bool>(leftValue.getVal());
         double right = std::get<bool>(rightValue.getVal());
 
@@ -171,9 +169,7 @@ ReturnValue OpNode::evaluateComparison(std::map<std::string, ReturnValue> variab
     else if (this->op == "!=") {
         return (this->left != this->right);
     }
-    else{
         throw(3);
-    }
 }
 
 ReturnValue OpNode::evaluateBinOp(std::map<std::string, ReturnValue> variableMap) {
@@ -407,7 +403,7 @@ void StatementNode::print(size_t depth) {
         for (Node* Statement : this->statementsForTrue) {
             std::cout << std::endl;
             Statement->print(depth + 1);
-        } // PLAG MARKER
+        }
         std::cout << std::endl;
         for(size_t i = 0; i < depth; ++i) {
             std::cout << "    ";
@@ -534,7 +530,8 @@ void StatementNode::evaluatePrint(std::map<std::string, ReturnValue>& variableMa
         if(std::get<bool>(conditionalValue.getVal())){
             std::cout << "true" << std::endl;
             return;
-        } else {
+        }
+        else {
             std::cout << "false" << std::endl;
             return;
         }
