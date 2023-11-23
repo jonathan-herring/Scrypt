@@ -25,7 +25,8 @@ void StatementParser::StatementsParse(std::deque<Token> tokens) {
 bool StatementParser::checkForEmptiness() {
     if (this->statements.empty()) {
         return true;
-    } else {
+    }
+    else {
         return false;
     }
 }
@@ -116,7 +117,8 @@ Node* StatementParser::ReturnStatement(std::deque<Token>& tokens) {
             std::unique_ptr<StatementNode> nullPointer(new StatementNode("null"));
             rootOfStatement->setConditional(nullPointer.release());
             return rootOfStatement.release();
-        } else {
+        }
+        else {
             std::cout << "Unexpected token at line " << tokAtFront.getLine() 
             << " column " << tokAtFront.getLine() << ": " << tokAtFront.getToken() << "." << std::endl;
             throw(2);
@@ -221,7 +223,8 @@ Node* StatementParser::IfStatement(std::deque<Token>& tokens) {
     }
     else if (tokAtFront.getToken() == "{") {
         rootOfStatement->statementsForFalse = FormBlock(tokens);
-    } else {
+    }
+    else {
         std::cout << "Unexpected token at line " << tokAtFront.getLine() << " column " 
         << tokAtFront.getCol() << ": " << tokAtFront.getToken() << std::endl;
         throw(2);

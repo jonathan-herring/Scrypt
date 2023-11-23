@@ -169,7 +169,7 @@ ReturnValue OpNode::evaluateComparison(std::map<std::string, ReturnValue> variab
     else if (this->op == "!=") {
         return (this->left != this->right);
     }
-        throw(3);
+    throw(3);
 }
 
 ReturnValue OpNode::evaluateBinOp(std::map<std::string, ReturnValue> variableMap) {

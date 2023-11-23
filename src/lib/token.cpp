@@ -8,36 +8,51 @@ Token::Token(int l, int c, std::string tokenID) {
 
     if ((tokenID == "(") || (tokenID == ")")) {
         this->type = parenthesis;
-    } else if (tokenID == "+" || tokenID == "-" || tokenID == "*" || tokenID == "/" || tokenID == "%") {
+    }
+    else if (tokenID == "+" || tokenID == "-" || tokenID == "*" || tokenID == "/" || tokenID == "%") {
         this->type = op;
-    } else if (tokenID == "END") {
+    }
+    else if (tokenID == "END") {
         this->type = END;
-    } else if (isFloat(tokenID)) {
+    }
+    else if (isFloat(tokenID)) {
         this->type = number;
-    } else if (tokenID == "=") {
+    }
+    else if (tokenID == "=") {
         this->type = op;
-    } else if (isIdentifier(tokenID)) {
+    }
+    else if (isIdentifier(tokenID)) {
         this->type = identifier;
-    } else if (tokenID == "<" || tokenID == "<=" || tokenID == ">" || tokenID == ">=") {
+    }
+    else if (tokenID == "<" || tokenID == "<=" || tokenID == ">" || tokenID == ">=") {
         this->type = op;
-    } else if (tokenID == "==" || tokenID == "!=") {
+    }
+    else if (tokenID == "==" || tokenID == "!=") {
         this->type = op;
-    } else if (tokenID == "&") {
+    }
+    else if (tokenID == "&") {
         this->type = op;
-    } else if (tokenID == "^") {
+    }
+    else if (tokenID == "^") {
         this->type = op;
-    } else if (tokenID == "|") {
+    }
+    else if (tokenID == "|") {
         this->type = op;
-    } else if (tokenID == "if" || tokenID == "while" || tokenID == "print" 
+    }
+    else if (tokenID == "if" || tokenID == "while" || tokenID == "print" 
     || tokenID == "else" || tokenID == "def" || tokenID == "return") {
         this->type = statement;
-    } else if (tokenID == "null" || tokenID == "," || tokenID == ";") {
+    }
+    else if (tokenID == "null" || tokenID == "," || tokenID == ";") {
         this->type = other;
-    } else if (tokenID == "{" || tokenID == "}") {
+    }
+    else if (tokenID == "{" || tokenID == "}") {
         this->type = other;
-    } else if (tokenID == "[" || tokenID == "]") {
+    }
+    else if (tokenID == "[" || tokenID == "]") {
         this->type = bracketArray;
-    } else {
+    }
+    else {
         this->type = ERROR;
     }
 }
@@ -51,7 +66,8 @@ bool Token::isFloat(const std::string str) {
     if (str[str.size() - 1] == '.') {
         this->col += str.size();
         return false;
-    } else if (str[0] == '.') {
+    }
+    else if (str[0] == '.') {
         return false;
     }
 
@@ -64,7 +80,8 @@ bool Token::isFloat(const std::string str) {
                 this->col += i;
                 return false;
             }
-        } else if (!isdigit(str[i])) {
+        }
+        else if (!isdigit(str[i])) {
             return false;
         }
     }

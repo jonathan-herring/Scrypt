@@ -7,12 +7,14 @@ void Parser::eatToken(std::deque<Token>& tokens) {
         std::cout << "Unexpected token at line " << nextToken.getLine() << " column " 
         << nextToken.getCol() << ": " << nextToken.getToken() << std::endl;
         throw(2);
-    } else {
+    }
+    else {
         this->nextToken = tokens.front();
         
         if (this->nextToken.getType() == END) {
             this->nextNextToken.setType(END);
-        } else {
+        }
+        else {
             this->nextNextToken = tokens[1]; // The token after next token
         }
         tokens.pop_front();
@@ -70,7 +72,8 @@ Node* Parser::parseOperand(std::deque<Token>& tokens) {
         if (nextToken.getToken() == ")") {
             eatToken(tokens);
             return variableNode.release();
-        } else {
+        }
+        else {
             std::cout << "Parse Error: Missing closing parenthesis" << std::endl;
             throw(2);
         }
@@ -256,7 +259,8 @@ std::vector<Node*> Parser::parseFunctionArguments(std::deque<Token>& tokens) {
     std::string closingBound;
     if (openingBound == "(") {
         closingBound = ")";
-    } else {
+    }
+    else {
         closingBound = "]";
     }
     std::vector<Node*> arguments;
