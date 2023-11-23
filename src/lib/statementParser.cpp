@@ -117,7 +117,7 @@ Node* StatementParser::ReturnStatement(std::deque<Token>& tokens) {
             rootOfStatement->setConditional(nullPointer.release());
             return rootOfStatement.release();
         } else {
-            std::cout << "Unexpected token at line " << tokAtFront.getLine() 
+            std::cout << "A: Unexpected token at line " << tokAtFront.getLine() 
             << " column " << tokAtFront.getLine() << ": " << tokAtFront.getToken() << "." << std::endl;
             throw(2);
         }
@@ -125,7 +125,7 @@ Node* StatementParser::ReturnStatement(std::deque<Token>& tokens) {
     Parser p;
     rootOfStatement->setConditional(p.parseBigWrapper(tokens));
     if (tokAtFront.getToken() != ";") {
-        std::cout << "Unexpected token at line " << tokAtFront.getLine() 
+        std::cout << "B: Unexpected token at line " << tokAtFront.getLine() 
         << " column " << tokAtFront.getLine() << ": " << tokAtFront.getToken() << "." << std::endl;
     }
     tokens.pop_front();
@@ -139,7 +139,7 @@ Node* StatementParser::ExpressionStatement(std::deque<Token>& tokens) {
 
     Token tokAtFront = tokens.front();
     if (tokAtFront.getToken() != ";") {
-        std::cout << "Unexpected token at line " << tokAtFront.getLine() << " column " 
+        std::cout << "C: Unexpected token at line " << tokAtFront.getLine() << " column " 
         << tokAtFront.getCol() << ": " << tokAtFront.getToken() << std::endl;
         throw(2);
     }
@@ -149,7 +149,7 @@ Node* StatementParser::ExpressionStatement(std::deque<Token>& tokens) {
 Node* StatementParser::FunctionDefinition(std::deque<Token>& tokens) {
     Token tokAtFront = tokens.front();
     if (tokAtFront.getType() != identifier) {
-        std::cout << "Unexpected token at line " << tokAtFront.getLine() << " column " 
+        std::cout << "D: Unexpected token at line " << tokAtFront.getLine() << " column " 
         << tokAtFront.getCol() << ": " << tokAtFront.getToken() << std::endl;
         throw(3);
     }
@@ -157,7 +157,7 @@ Node* StatementParser::FunctionDefinition(std::deque<Token>& tokens) {
     tokens.pop_front();
 
     if (tokAtFront.getToken() != "(") {
-        std::cout << "Unexpected token at line " << tokAtFront.getLine() << " column " 
+        std::cout << "E: Unexpected token at line " << tokAtFront.getLine() << " column " 
         << tokAtFront.getCol() << ": " << tokAtFront.getToken() << std::endl;
         throw(3);
     }
@@ -165,7 +165,7 @@ Node* StatementParser::FunctionDefinition(std::deque<Token>& tokens) {
 
     while(tokAtFront.getToken() != ")"){ 
         if (tokAtFront.getType() != identifier) {
-            std::cout << "Unexpected token at line " << tokAtFront.getLine() << " column " 
+            std::cout << "F: Unexpected token at line " << tokAtFront.getLine() << " column " 
             << tokAtFront.getCol() << ": " << tokAtFront.getToken() << std::endl;
             throw(3);
         }
@@ -175,20 +175,20 @@ Node* StatementParser::FunctionDefinition(std::deque<Token>& tokens) {
             break;
         }
         if (tokAtFront.getToken() != ",") {
-            std::cout << "Unexpected token at line " << tokAtFront.getLine() << " column " 
+            std::cout << "G: Unexpected token at line " << tokAtFront.getLine() << " column " 
             << tokAtFront.getCol() << ": " << tokAtFront.getToken() << std::endl;
             throw(3);
         }
         tokens.pop_front();
         if (tokAtFront.getType() != identifier) {
-            std::cout << "Unexpected token at line " << tokAtFront.getLine() << " column " 
+            std::cout << "H: Unexpected token at line " << tokAtFront.getLine() << " column " 
             << tokAtFront.getCol() << ": " << tokAtFront.getToken() << std::endl;
             throw(3);
         }
     }
     tokens.pop_front();
     if(tokAtFront.getToken() != "{") {
-        std::cout << "Unexpected token at line " << tokAtFront.getLine() << " column " 
+        std::cout << "I: Unexpected token at line " << tokAtFront.getLine() << " column " 
         << tokAtFront.getCol() << ": " << tokAtFront.getToken() << std::endl;
         throw(3);
     }
@@ -205,7 +205,7 @@ Node* StatementParser::IfStatement(std::deque<Token>& tokens) {
     
     Token tokAtFront = tokens.front();
     if(tokAtFront.getToken() != "{") {
-        std::cout << "Unexpected token at line " << tokAtFront.getLine() << " column " 
+        std::cout << "J: Unexpected token at line " << tokAtFront.getLine() << " column " 
         << tokAtFront.getCol() << ": " << tokAtFront.getToken() << std::endl;
         throw(2);
         
@@ -222,7 +222,7 @@ Node* StatementParser::IfStatement(std::deque<Token>& tokens) {
     else if (tokAtFront.getToken() == "{") {
         rootOfStatement->statementsForFalse = FormBlock(tokens);
     } else {
-        std::cout << "Unexpected token at line " << tokAtFront.getLine() << " column " 
+        std::cout << "K: Unexpected token at line " << tokAtFront.getLine() << " column " 
         << tokAtFront.getCol() << ": " << tokAtFront.getToken() << std::endl;
         throw(2);
     }
@@ -235,7 +235,7 @@ Node* StatementParser::WhileStatement(std::deque<Token>& tokens) {
     rootOfStatement->setConditional(p.parseBigWrapper(tokens));
     Token tokAtFront = tokens.front();
     if (tokAtFront.getToken() != "{") {
-        std::cout << "Unexpected token at line " << tokAtFront.getLine() << " column " 
+        std::cout << "L: Unexpected token at line " << tokAtFront.getLine() << " column " 
         << tokAtFront.getCol() << ": " << tokAtFront.getToken() << std::endl;
         throw(2);
     }
