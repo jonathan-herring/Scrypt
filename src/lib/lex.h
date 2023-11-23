@@ -4,16 +4,6 @@
 #include "token.h"
 
 #include <deque>
-
-// class Lexer
-// {
-//     public:
-//         Lexer() {};
-//         std::deque<Token> tokenize(std::string input);
-// };
-
-// New Lexer starts here
-
 class Lexer
 {
     public:

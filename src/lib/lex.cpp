@@ -19,7 +19,6 @@ std::deque<Token> Lexer::tokenize(std::string input) {
             tokens.push_back(token);
             temp = "";
 
-            // Skip over the characters that were part of the "true" or "false" token
             i += temp.length();
 
             continue;
@@ -38,40 +37,45 @@ std::deque<Token> Lexer::tokenize(std::string input) {
                 partOfVar = false;
             }
         }
+        //= operator
         else if (input[i] == '=') {
-            if (i + 1 < input.length() && input[i-1] != '=' && input[i+1] != '=' && input[i-1] != '!' &&  // = operator
+            if (i + 1 < input.length() && input[i-1] != '=' && input[i+1] != '=' && input[i-1] != '!' &&
                 input[i+1] != '!' && input[i-1] != '<' && input[i-1] != '>') {
                 token = Token(line, col, temp);
                 tokens.push_back(token);
                 temp = "";
             }
-            else if (input[i-1] == '=') {      // == operator
-                if(tokens.back().getToken() != "<=" && tokens.back().getToken() != ">="  && // if previous token uses = prevent it from incorrectly printing == instead of =
+            //== operator
+            else if (input[i-1] == '=') {
+                if(tokens.back().getToken() != "<=" && tokens.back().getToken() != ">="  &&
                 tokens.back().getToken() != "!=" && tokens.back().getToken() != "=="){
                     token = Token(line, col - 1, "==");
                     tokens.push_back(token);
                     temp = "";
                 }
-                else if(input[i+1] != '='){ //prevents print of = when next node would make it ==
+                else if(input[i+1] != '='){
                    token = Token(line, col, temp);
                     tokens.push_back(token);
                     temp = ""; 
                 }
             }
-            else if (input[i-1] == '!') {      // != operator
+            //!= operator
+            else if (input[i-1] == '!') {
                 token = Token(line, col - 1, "!=");
                 tokens.push_back(token);
                 temp = "";
             }
-            else if (input[i-1] == '<') {      // <= operator
+            //<= operator
+            else if (input[i-1] == '<') {
                 token = Token(line, col - 1, "<=");
                 tokens.pop_back();
                 tokens.push_back(token);
                 temp = "";
             }
-            else if (input[i-1] == '>') {      // >= operator
+            //>= operator
+            else if (input[i-1] == '>') {
                 token = Token(line, col - 1, ">=");
-                tokens.pop_back();            //THIS AND PREVIOUS POP_BACK COULD MESS WITH CODE LATER
+                tokens.pop_back();
                 tokens.push_back(token);
                 temp = "";
             }
@@ -81,18 +85,17 @@ std::deque<Token> Lexer::tokenize(std::string input) {
             tokens.push_back(token);
             temp = "";
         }
-        else if (input[i] == '^') {            // TODO: Add token for XOR in token.cpp
+        else if (input[i] == '^') {
             token = Token(line, col, temp);
             tokens.push_back(token);
             temp = "";
         }
-        else if (input[i] == '|') {            // TODO: Add token for OR in token.cpp
+        else if (input[i] == '|') {
             token = Token(line, col, temp);
             tokens.push_back(token);
             temp = "";
         }
         else if (isdigit(input[i]) || input[i] == '.') {
-            // push full number
             if (i + 1 < input.length() && !isdigit(input[i+1]) && input[i+1] != '.') {
                 token = Token(line, col - temp.length() + 1, temp);
                 tokens.push_back(token);
@@ -109,12 +112,12 @@ std::deque<Token> Lexer::tokenize(std::string input) {
             tokens.push_back(token);
             temp = "";
         }
-        else if ((input[i] == '+') || (input[i] == '-') || (input[i] == '*') || (input[i] == '/') || input[i] == '%') { // Add modulo and token for modulo
+        else if ((input[i] == '+') || (input[i] == '-') || (input[i] == '*') || (input[i] == '/') || input[i] == '%') {
             token = Token(line, col, temp);
             tokens.push_back(token);
             temp = "";
         }
-        else if (input[i] == '&') { // TODO: Add token for AND in token.cpp
+        else if (input[i] == '&') {
             token = Token(line, col, temp);
             tokens.push_back(token);
             temp = "";
@@ -146,19 +149,5 @@ std::deque<Token> Lexer::tokenize(std::string input) {
             tokens.push_back(token);
         }
     }
-
-    //check if the lex overall is valid (has float, identifier, or bool)
-    /*bool validValue = false;
-    for(size_t i = 0; i < tokens.size(); i++){
-        if(tokens[i].getType() == number || tokens[i].getType() == identifier){ //ADD TRUE FALSE TO THIS
-            validValue = true;
-        }
-    }
-    if(!validValue){
-        std::cout << "HERE: Syntax error on line " << token.getLine() << " column " << token.getCol() << ".\n";
-        throw(1);
-    }*/
-
-
     return tokens;
 }

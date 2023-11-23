@@ -3,7 +3,7 @@
 #include <cmath>
 
 std::string Node::getIDName() {
-    std::cout << "Runtime error" << std::endl; // Add more detail?
+    std::cout << "Runtime error" << std::endl;
     throw(3);
     return "";
 }
@@ -23,9 +23,11 @@ bool ReturnValue::operator == (ReturnValue rightValue) {
         return true;
     }
     else if (this->getType() == Undefined) {
-        throw(3); // Possibly add a detailed cout statement later on
+        std::cout << "Runtime error" << std::endl;
+        throw(3);
     }
     else {
+        std::cout << "Runtime error" << std::endl;
         throw(3);
     }
 }
@@ -169,7 +171,9 @@ ReturnValue OpNode::evaluateComparison(std::map<std::string, ReturnValue> variab
     else if (this->op == "!=") {
         return (this->left != this->right);
     }
-    throw(3); // Should not be reached
+    else{
+        throw(3);
+    }
 }
 
 ReturnValue OpNode::evaluateBinOp(std::map<std::string, ReturnValue> variableMap) {

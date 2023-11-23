@@ -22,15 +22,15 @@ class Parser {
         Node* parse(std::deque<Token>& tokens);
         Node* parseBigWrapper(std::deque<Token>& tokens);
         Node* parseSmallWrapper(std::deque<Token>& tokens);
-        Node* parseOperand(std::deque<Token>& tokens); // This includes numbers, parentheses, and identifiers
-        Node* parseAssign(std::deque<Token>& tokens); //
+        Node* parseOperand(std::deque<Token>& tokens); //This includes numbers, parentheses, and identifiers
+        Node* parseAssign(std::deque<Token>& tokens); 
         Node* parseEquals(std::deque<Token>& tokens);
-        Node* parseCompare(std::deque<Token>& tokens); //
+        Node* parseCompare(std::deque<Token>& tokens); 
         Node* parsePlusMinus(std::deque<Token>& tokens);
         Node* parseDivMult(std::deque<Token>& tokens);
-        Node* parseIor(std::deque<Token>& tokens); // Inclusive or - |
-        Node* parseXor(std::deque<Token>& tokens); // Exclusive or - ^
-        Node* parseAnd(std::deque<Token>& tokens); //
+        Node* parseIor(std::deque<Token>& tokens); //Inclusive or - |
+        Node* parseXor(std::deque<Token>& tokens); //Exclusive or - ^
+        Node* parseAnd(std::deque<Token>& tokens); 
         Node* parseFunction(std::deque<Token>& tokens);
 
         std::vector<Node*> parseFunctionArguments(std::deque<Token>& tokens);

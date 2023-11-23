@@ -11,14 +11,15 @@
 enum typeReturnVal {
     Number,
     Boolean,
-    Nothing, // Null
+    Nothing, //Null
     FunctionType,
     Undefined
 };
 
 class Function;
 class Node;
-class ReturnValue { // Different evaluates return different values, so we need this 
+//Necessary since different evaluates return different values 
+class ReturnValue {
     private:
         typeReturnVal returnType;
         std::variant<bool, double, std::shared_ptr<Function>> returnVal;

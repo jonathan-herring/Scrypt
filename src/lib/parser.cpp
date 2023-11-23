@@ -4,7 +4,7 @@
 
 void Parser::eatToken(std::deque<Token>& tokens) {
     if (tokens.empty()) { // Underflow
-        std::cout << "A:Unexpected token at line " << nextToken.getLine() << " column " 
+        std::cout << "Unexpected token at line " << nextToken.getLine() << " column " 
         << nextToken.getCol() << ": " << nextToken.getToken() << std::endl;
         throw(2);
     } else {
@@ -36,7 +36,7 @@ Node* Parser::parseSmallWrapper(std::deque<Token>& tokens) {
     std::unique_ptr<Node> tree;
     tree.reset(parse(tokens));
     if (nextToken.getToken() != "END") {
-        std::cout << "B:Unexpected token at line " << nextToken.getLine() << " column " 
+        std::cout << "Unexpected token at line " << nextToken.getLine() << " column " 
         << nextToken.getCol() << ": " << nextToken.getToken() << std::endl;
         throw(2);
     }
@@ -45,7 +45,7 @@ Node* Parser::parseSmallWrapper(std::deque<Token>& tokens) {
 
 Node* Parser::parseOperand(std::deque<Token>& tokens) {
     if (this->nextToken.getToken() == "") {
-        std::cout << "Parse error a" << std::endl; // Add more details later
+        std::cout << "Parse error" << std::endl;
         throw(2);
     }
     if (this->nextToken.getType() == booleanVal) {
@@ -76,7 +76,7 @@ Node* Parser::parseOperand(std::deque<Token>& tokens) {
         }
     }
     else{
-        std::cout << "C:Unexpected token at line " << nextToken.getLine() << " column " << nextToken.getCol() << ": " << nextToken.getToken() << std::endl;
+        std::cout << "Unexpected token at line " << nextToken.getLine() << " column " << nextToken.getCol() << ": " << nextToken.getToken() << std::endl;
         throw(2);
     }
 
@@ -111,7 +111,7 @@ Node* Parser::parseEquals(std::deque<Token>& tokens) {
         std::unique_ptr<Node> rightSide(parseCompare(tokens));
 
         if (leftSide == nullptr || rightSide == nullptr) {
-            std::cout << "Invalid comparison" << std::endl; // Possibly change error message later
+            std::cout << "Invalid comparison" << std::endl;
             throw(2);
         }
 
@@ -132,7 +132,7 @@ Node* Parser::parseCompare(std::deque<Token>& tokens) {
         std::unique_ptr<Node> rightSide(parsePlusMinus(tokens));
 
         if (leftSide == nullptr || rightSide == nullptr) {
-            std::cout << "Parse erorr" << std::endl; // Possibly add more details later
+            std::cout << "Parse erorr" << std::endl;
             throw(2);
         }
 
@@ -155,7 +155,7 @@ Node* Parser::parsePlusMinus(std::deque<Token>& tokens) {
         std::unique_ptr<Node> rightSide(parseDivMult(tokens));
 
         if (leftSide == nullptr || rightSide == nullptr) {
-            std::cout << "Error" << std::endl; // possibly add more details later
+            std::cout << "Error" << std::endl;
             throw(2);
         }
         std::unique_ptr<OpNode> operatorNode(new OpNode(operation));
@@ -174,7 +174,7 @@ Node* Parser::parseDivMult(std::deque<Token>& tokens) {
         eatToken(tokens);
         std::unique_ptr<Node> rightSide(parseFunction(tokens));
         if (leftSide == nullptr || rightSide == nullptr) {
-            std::cout << "Parse error c" << std::endl;
+            std::cout << "Parse error" << std::endl;
             throw(2);
         }
         std::unique_ptr<OpNode> operationNode(new OpNode(nextTokenValue));
@@ -202,7 +202,7 @@ Node* Parser::parseIor(std::deque<Token>& tokens) {
         eatToken(tokens);
         std::unique_ptr<Node> rightSide(parseXor(tokens));
         if (leftSide == nullptr || rightSide == nullptr) {
-            std::cout << "Parse error d" << std::endl;
+            std::cout << "Parse error" << std::endl;
             throw(2);
         }
         std::unique_ptr<OpNode> operationNode(new OpNode(operation));
@@ -239,7 +239,7 @@ Node* Parser::parseAnd(std::deque<Token>& tokens) {
         eatToken(tokens);
         std::unique_ptr<Node> rightSide(parseEquals(tokens));
         if (rightSide == nullptr || leftSide == nullptr) {
-            std::cout << "Parse error e" << std::endl;
+            std::cout << "Parse error" << std::endl;
             throw(2);
         }
         std::unique_ptr<OpNode> operationNode(new OpNode(operation));
@@ -266,7 +266,7 @@ std::vector<Node*> Parser::parseFunctionArguments(std::deque<Token>& tokens) {
     }
     arguments.push_back(parseAssign(tokens));
     if (nextToken.getToken() != closingBound && nextToken.getToken() != ",") {
-        std::cout << "D:Unexpected token at line " << nextToken.getLine() << " column " 
+        std::cout << "Unexpected token at line " << nextToken.getLine() << " column " 
         << nextToken.getCol() << ": " << nextToken.getToken() << std::endl;
         throw(3);
     }
@@ -277,7 +277,7 @@ std::vector<Node*> Parser::parseFunctionArguments(std::deque<Token>& tokens) {
             break;
         }
         if (nextToken.getToken() != ",") {
-            std::cout << "E:Unexpected token at line " << nextToken.getLine() << " column " 
+            std::cout << "Unexpected token at line " << nextToken.getLine() << " column " 
             << nextToken.getCol() << ": " << nextToken.getToken() << std::endl;
             throw(3);
         }
