@@ -63,6 +63,11 @@ Node* Parser::parseOperand(std::deque<Token>& tokens) {
         eatToken(tokens);
         return leafNode.release();
     }
+    else if(tokens[0].getType() == number && tokens.size() == 2){
+        std::unique_ptr<LeafNode> leafNode(new LeafNode(std::stold(nextToken.getToken())));
+        eatToken(tokens);
+        return leafNode.release();
+    }
     else if (this->nextToken.getToken() == "(") {
         eatToken(tokens);
         std::unique_ptr<Node> variableNode(parseAssign(tokens));
