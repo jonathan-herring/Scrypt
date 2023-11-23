@@ -155,7 +155,7 @@ std::deque<Token> Lexer::tokenize(std::string input) {
         }
     }
     if(!validValue){
-        std::cout << "Syntax error on line " << token.getLine() << " column " << token.getCol() << ".\n";
+        std::cout << "HERE: Syntax error on line " << token.getLine() << " column " << token.getCol() << ".\n";
         throw(1);
     }
 

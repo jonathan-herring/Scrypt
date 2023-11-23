@@ -118,13 +118,9 @@ Node* Parser::parseEquals(std::deque<Token>& tokens) {
         std::unique_ptr<OpNode> operatorNode(new OpNode(operation));
         operatorNode->subNodeAdd(leftSide.release());
         operatorNode->subNodeAdd(rightSide.release());
-        
-        // Assign the result to leftSide
-        leftSide.reset(operatorNode.release());
     }
     return leftSide.release();
 }
-
 
 Node* Parser::parseCompare(std::deque<Token>& tokens) {
     std::unique_ptr<Node> leftSide(parsePlusMinus(tokens));
@@ -136,20 +132,16 @@ Node* Parser::parseCompare(std::deque<Token>& tokens) {
         std::unique_ptr<Node> rightSide(parsePlusMinus(tokens));
 
         if (leftSide == nullptr || rightSide == nullptr) {
-            std::cout << "Parse error" << std::endl; // Possibly add more details later
+            std::cout << "Parse erorr" << std::endl; // Possibly add more details later
             throw(2);
         }
 
         std::unique_ptr<OpNode> operatorNode(new OpNode(comparisonOp));
         operatorNode->subNodeAdd(leftSide.release());
         operatorNode->subNodeAdd(rightSide.release());
-        
-        // Assign the result to leftSide
-        leftSide.reset(operatorNode.release());
     }
     return leftSide.release();
 }
-
 
 Node* Parser::parsePlusMinus(std::deque<Token>& tokens) {
     std::unique_ptr<Node> leftSide(parseDivMult(tokens));
@@ -169,15 +161,10 @@ Node* Parser::parsePlusMinus(std::deque<Token>& tokens) {
         std::unique_ptr<OpNode> operatorNode(new OpNode(operation));
         operatorNode->subNodeAdd(leftSide.release());
         operatorNode->subNodeAdd(rightSide.release());
-        
-        // Assign the result to leftSide
         leftSide.reset(operatorNode.release());
-
-        operation = this->nextToken.getToken();
     }
     return leftSide.release();
 }
-
 
 Node* Parser::parseDivMult(std::deque<Token>& tokens) {
     std::unique_ptr<Node> leftSide(parseFunction(tokens));
@@ -193,15 +180,9 @@ Node* Parser::parseDivMult(std::deque<Token>& tokens) {
         std::unique_ptr<OpNode> operationNode(new OpNode(nextTokenValue));
         operationNode->subNodeAdd(leftSide.release());
         operationNode->subNodeAdd(rightSide.release());
-        
-        // Assign the result to leftSide
-        leftSide.reset(operationNode.release());
-
-        nextTokenValue = this->nextToken.getToken();
     }
     return leftSide.release();
 }
-
 
 Node* Parser::parseFunction(std::deque<Token>& tokens) {
     std::unique_ptr<Node> leftValue(parseOperand(tokens));
