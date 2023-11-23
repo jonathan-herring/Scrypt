@@ -43,39 +43,45 @@ Node* Parser::parseSmallWrapper(std::deque<Token>& tokens) {
     return tree.release();
 }
 
-std::unique_ptr<Node> Parser::parseOperand(std::deque<Token>& tokens) {
+Node* Parser::parseOperand(std::deque<Token>& tokens) {
     if (this->nextToken.getToken() == "") {
         std::cout << "Parse error a" << std::endl; // Add more details later
         throw(2);
     }
-
     if (this->nextToken.getType() == booleanVal) {
-        return std::make_unique<BoolNode>(this->nextToken.getToken());
+        std::unique_ptr<BoolNode> boolean(new BoolNode(this->nextToken.getToken()));
+        eatToken(tokens);
+        return boolean.release();
     }
     else if (this->nextToken.getType() == identifier) {
-        return std::make_unique<IdentifierNode>(nextToken.getToken());
+        std::unique_ptr<IdentifierNode> nodeLeaf(new IdentifierNode(nextToken.getToken()));
+        eatToken(tokens);
+        return nodeLeaf.release();
     }
     else if (this->nextToken.getType() == number) {
-        return std::make_unique<LeafNode>(std::stold(nextToken.getToken()));
+        std::unique_ptr<LeafNode> leafNode(new LeafNode(std::stold(nextToken.getToken())));
+        eatToken(tokens);
+        return leafNode.release();
     }
     else if (this->nextToken.getToken() == "(") {
         eatToken(tokens);
-        std::unique_ptr<Node> variableNode = parseAssign(tokens);
+        std::unique_ptr<Node> variableNode(parseAssign(tokens));
 
         if (nextToken.getToken() == ")") {
             eatToken(tokens);
-            return variableNode;
+            return variableNode.release();
         } else {
             std::cout << "Parse Error: Missing closing parenthesis" << std::endl;
             throw(2);
         }
     }
-    else {
+    else{
         std::cout << "Unexpected token at line " << nextToken.getLine() << " column " << nextToken.getCol() << ": " << nextToken.getToken() << std::endl;
         throw(2);
     }
-}
 
+    return nullptr;
+}
 
 
 Node* Parser::parseAssign(std::deque<Token>& tokens) {
