@@ -357,11 +357,15 @@ StatementNode::~StatementNode() {
     }
 
     for (Node* subNode : this->statementsForFalse) {
-        delete subNode;
+        if (subNode) {
+            delete subNode;
+        }
     }
 
     for (Node* subNode : this->statementsForTrue) {
-        delete subNode;
+        if (subNode) {
+            delete subNode;
+        }
     }
 }
 
