@@ -4,7 +4,7 @@
 
 void Parser::eatToken(std::deque<Token>& tokens) {
     if (tokens.empty()) { // Underflow
-        std::cout << "Unexpected token at line " << nextToken.getLine() << " column " 
+        std::cout << "A:Unexpected token at line " << nextToken.getLine() << " column " 
         << nextToken.getCol() << ": " << nextToken.getToken() << std::endl;
         throw(2);
     } else {
@@ -36,7 +36,7 @@ Node* Parser::parseSmallWrapper(std::deque<Token>& tokens) {
     std::unique_ptr<Node> tree;
     tree.reset(parse(tokens));
     if (nextToken.getToken() != "END") {
-        std::cout << "Unexpected token at line " << nextToken.getLine() << " column " 
+        std::cout << "B:Unexpected token at line " << nextToken.getLine() << " column " 
         << nextToken.getCol() << ": " << nextToken.getToken() << std::endl;
         throw(2);
     }
@@ -76,7 +76,7 @@ Node* Parser::parseOperand(std::deque<Token>& tokens) {
         }
     }
     else{
-        std::cout << "Unexpected token at line " << nextToken.getLine() << " column " << nextToken.getCol() << ": " << nextToken.getToken() << std::endl;
+        std::cout << "C:Unexpected token at line " << nextToken.getLine() << " column " << nextToken.getCol() << ": " << nextToken.getToken() << std::endl;
         throw(2);
     }
 
@@ -266,7 +266,7 @@ std::vector<Node*> Parser::parseFunctionArguments(std::deque<Token>& tokens) {
     }
     arguments.push_back(parseAssign(tokens));
     if (nextToken.getToken() != closingBound && nextToken.getToken() != ",") {
-        std::cout << "Unexpected token at line " << nextToken.getLine() << " column " 
+        std::cout << "D:Unexpected token at line " << nextToken.getLine() << " column " 
         << nextToken.getCol() << ": " << nextToken.getToken() << std::endl;
         throw(3);
     }
@@ -277,7 +277,7 @@ std::vector<Node*> Parser::parseFunctionArguments(std::deque<Token>& tokens) {
             break;
         }
         if (nextToken.getToken() != ",") {
-            std::cout << "Unexpected token at line " << nextToken.getLine() << " column " 
+            std::cout << "E:Unexpected token at line " << nextToken.getLine() << " column " 
             << nextToken.getCol() << ": " << nextToken.getToken() << std::endl;
             throw(3);
         }
