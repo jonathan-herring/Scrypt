@@ -136,10 +136,6 @@ Node* StatementParser::ExpressionStatement(std::deque<Token>& tokens) {
     std::unique_ptr<StatementNode> rootOfStatement(new StatementNode("expression"));
     Parser p;
     rootOfStatement->setConditional(p.parseBigWrapper(tokens));
-    
-    // Initialize vectors
-    rootOfStatement->statementsForFalse = std::vector<Node*>();
-    rootOfStatement->statementsForTrue = std::vector<Node*>();
 
     Token tokAtFront = tokens.front();
     if (tokAtFront.getToken() != ";") {
@@ -150,8 +146,6 @@ Node* StatementParser::ExpressionStatement(std::deque<Token>& tokens) {
     tokens.pop_front();
     return rootOfStatement.release();
 }
-
-
 Node* StatementParser::FunctionDefinition(std::deque<Token>& tokens) {
     Token tokAtFront = tokens.front();
     if (tokAtFront.getType() != identifier) {
