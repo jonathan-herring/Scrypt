@@ -352,12 +352,14 @@ StatementNode::StatementNode(std::string statement) {
 }
 
 StatementNode::~StatementNode() {
-    if(this->conditional != nullptr){
+    if (this->conditional) {
         delete this->conditional;
     }
+
     for (Node* subNode : this->statementsForFalse) {
         delete subNode;
     }
+
     for (Node* subNode : this->statementsForTrue) {
         delete subNode;
     }
