@@ -45,7 +45,7 @@ Node* Parser::parseSmallWrapper(std::deque<Token>& tokens) {
 
 Node* Parser::parseOperand(std::deque<Token>& tokens) {
     if (this->nextToken.getToken() == "") {
-        std::cout << "Parse error" << std::endl; // Add more details later
+        std::cout << "Parse error a" << std::endl; // Add more details later
         throw(2);
     }
     if (this->nextToken.getType() == booleanVal) {
@@ -76,7 +76,7 @@ Node* Parser::parseOperand(std::deque<Token>& tokens) {
         }
     }
     else {
-        std::cout << "Parse error";
+        std::cout << "Parse error b";
         throw(2);
     }
     return nullptr;
@@ -172,7 +172,7 @@ Node* Parser::parseDivMult(std::deque<Token>& tokens) {
         eatToken(tokens);
         std::unique_ptr<Node> rightSide(parseFunction(tokens));
         if (leftSide == nullptr || rightSide == nullptr) {
-            std::cout << "Parse error" << std::endl;
+            std::cout << "Parse error c" << std::endl;
             throw(2);
         }
         std::unique_ptr<OpNode> operationNode(new OpNode(nextTokenValue));
@@ -200,7 +200,7 @@ Node* Parser::parseIor(std::deque<Token>& tokens) {
         eatToken(tokens);
         std::unique_ptr<Node> rightSide(parseXor(tokens));
         if (leftSide == nullptr || rightSide == nullptr) {
-            std::cout << "Parse error" << std::endl;
+            std::cout << "Parse error d" << std::endl;
             throw(2);
         }
         std::unique_ptr<OpNode> operationNode(new OpNode(operation));
@@ -237,7 +237,7 @@ Node* Parser::parseAnd(std::deque<Token>& tokens) {
         eatToken(tokens);
         std::unique_ptr<Node> rightSide(parseEquals(tokens));
         if (rightSide == nullptr || leftSide == nullptr) {
-            std::cout << "Parse error" << std::endl;
+            std::cout << "Parse error e" << std::endl;
             throw(2);
         }
         std::unique_ptr<OpNode> operationNode(new OpNode(operation));
